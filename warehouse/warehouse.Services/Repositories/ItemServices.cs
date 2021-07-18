@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using warehouse.Database;
 using warehouse.Database.Entity;
@@ -28,8 +31,6 @@ namespace warehouse.Services.Repositories
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        
-
         public Items CreateNewItem(ItemCreateDto itemCreateDto)
         {
             var newItem = _mapper.Map<Items>(itemCreateDto);
@@ -38,6 +39,19 @@ namespace warehouse.Services.Repositories
             newItem.IndexItem = itemIndex;
             AddItemToDataBase(newItem);
             return newItem;
+        }
+
+        public List<ItemDto> GetItemList(string searchingParse = "", int pageNumber = 1, int quantity = 5)
+        {
+            var items = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .Where(x => x.IndexItem.Name.Contains(searchingParse))
+                .Skip(pageNumber - 1)
+                .Take(quantity)
+                .ToList();
+            var itemsDto = _mapper.Map<List<ItemDto>>(items);
+            return itemsDto;
         }
 
         private void AddItemToDataBase(Items items)

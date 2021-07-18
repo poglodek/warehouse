@@ -40,6 +40,7 @@ namespace warehouse
             services.AddScoped<IValidator<ItemCreateDto>, ItemValidation>();
             services.AddScoped<IItemServices, ItemServices>();
             services.AddControllers();
+            services.AddTransient<ErrorHandlingMiddleware>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "warehouse", Version = "v1" });
@@ -55,6 +56,7 @@ namespace warehouse
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "warehouse v1"));
             }
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 

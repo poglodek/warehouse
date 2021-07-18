@@ -14,6 +14,12 @@ namespace warehouse.Dto
         public WarehouseMapper()
         {
             CreateMap<Items, ItemCreateDto>().ReverseMap();
+            CreateMap<Items, ItemDto>()
+                .ForMember(x => x.Name, z => z.MapFrom(c =>c.IndexItem.Name))
+                .ForMember(x => x.Price, z => z.MapFrom(c =>c.IndexItem.Price))
+                .ForMember(x => x.Description, z => z.MapFrom(c =>c.IndexItem.Description))
+                .ReverseMap();
+
         }
     }
 }
