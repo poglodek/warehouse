@@ -1,0 +1,12 @@
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\bin\Debug\net5.0\warehouse.Database.deps.json
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\bin\Debug\net5.0\warehouse.Database.dll
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\bin\Debug\net5.0\ref\warehouse.Database.dll
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\bin\Debug\net5.0\warehouse.Database.pdb
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\obj\Debug\net5.0\warehouse.Database.csproj.AssemblyReference.cache
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\obj\Debug\net5.0\warehouse.Database.GeneratedMSBuildEditorConfig.editorconfig
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\obj\Debug\net5.0\warehouse.Database.AssemblyInfoInputs.cache
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\obj\Debug\net5.0\warehouse.Database.AssemblyInfo.cs
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\obj\Debug\net5.0\warehouse.Database.csproj.CoreCompileInputs.cache
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\obj\Debug\net5.0\warehouse.Database.dll
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\obj\Debug\net5.0\ref\warehouse.Database.dll
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Database\obj\Debug\net5.0\warehouse.Database.pdb

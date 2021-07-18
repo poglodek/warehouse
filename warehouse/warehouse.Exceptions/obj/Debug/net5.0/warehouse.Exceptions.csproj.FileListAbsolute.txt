@@ -1,0 +1,12 @@
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\bin\Debug\net5.0\warehouse.Exceptions.deps.json
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\bin\Debug\net5.0\warehouse.Exceptions.dll
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\bin\Debug\net5.0\ref\warehouse.Exceptions.dll
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\bin\Debug\net5.0\warehouse.Exceptions.pdb
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\obj\Debug\net5.0\warehouse.Exceptions.csproj.AssemblyReference.cache
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\obj\Debug\net5.0\warehouse.Exceptions.GeneratedMSBuildEditorConfig.editorconfig
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\obj\Debug\net5.0\warehouse.Exceptions.AssemblyInfoInputs.cache
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\obj\Debug\net5.0\warehouse.Exceptions.AssemblyInfo.cs
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\obj\Debug\net5.0\warehouse.Exceptions.csproj.CoreCompileInputs.cache
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\obj\Debug\net5.0\warehouse.Exceptions.dll
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\obj\Debug\net5.0\ref\warehouse.Exceptions.dll
+C:\Programming\CSharp\warehouse-git\warehouse\warehouse.Exceptions\obj\Debug\net5.0\warehouse.Exceptions.pdb
