@@ -41,7 +41,23 @@ namespace warehouse.Services.Repositories
             return newItem;
         }
 
-        public List<ItemDto> GetItemList(string searchingParse = "", int pageNumber = 1, int quantity = 5)
+        public List<ItemDto> GetItemList(string searchingParse,  int pageNumber, int quantity)
+        {
+
+            if (pageNumber == 0) pageNumber = 1;
+            if (quantity == 0) quantity = 5;
+
+            List<Items> items;
+            items = string.IsNullOrEmpty(searchingParse) ? SearchWithOutParse(pageNumber, quantity) : SearchWithParse(searchingParse, pageNumber, quantity);
+
+            var itemsDto = GetMappedItemsDto(
+                items
+                .ToList()); 
+            return itemsDto;
+
+        }
+
+        private List<Items> SearchWithParse(string searchingParse, int pageNumber, int quantity)
         {
             var items = _warehouseDbContext
                 .Items
@@ -49,8 +65,109 @@ namespace warehouse.Services.Repositories
                 .Where(x => x.IndexItem.Name.Contains(searchingParse))
                 .Skip(pageNumber - 1)
                 .Take(quantity)
+                .ToList(); ;
+            return items;
+        }
+        private List<Items> SearchWithOutParse(int pageNumber, int quantity)
+        {
+            var items = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .Skip(pageNumber - 1)
+                .Take(quantity)
+                .ToList(); ;
+            return items;
+        }
+
+        public ItemDto GetById(int id)
+        {
+            var item = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .FirstOrDefault(x => x.Id == id);
+
+            return GetMappedItemDto(item);
+
+        }
+
+        public void DeleteById(int id)
+        {
+            var item = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .FirstOrDefault(x => x.Id == id);
+
+            if (item is null) throw new NotFound("Item not found.");
+            _warehouseDbContext.Items.Remove(item);
+            _warehouseDbContext.SaveChanges();
+        }
+
+        public List<ItemDto> GetByEan(string ean)
+        {
+            var items = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .Where(x => x.EAN.Contains(ean))
+                .ToList(); 
+            return GetMappedItemsDto(items);
+
+        }
+
+        public List<ItemDto> GetByLocation(string location)
+        {
+            var items = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .Where(x => x.EAN.Contains(location))
                 .ToList();
+            return GetMappedItemsDto(items);
+        }
+
+        public List<ItemDto> GetBySerialNumber(string serialNumber)
+        {
+            var items = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .Where(x => x.SerialNumber == serialNumber)
+                .ToList();
+            return GetMappedItemsDto(items);
+        }
+
+        public void Update(ItemDto itemDto, int id)
+        {
+            var item = _warehouseDbContext
+                .Items
+                .FirstOrDefault(x => x.Id == id);
+            if (item is null) throw new NotFound("Item not found.");
+
+            var updateItem = _mapper.Map<Items>(itemDto);
+            var updatedItem = ItemUpdate(item, updateItem);
+            
+        }
+
+        private Items ItemUpdate(Items itemInDb, Items updateItem)
+        {
+            itemInDb.ActualLocation = updateItem.ActualLocation;
+            itemInDb.EAN = updateItem.EAN;
+            itemInDb.HasSerialNumber = updateItem.HasSerialNumber;
+            itemInDb.Quantity = updateItem.Quantity;
+            itemInDb.SerialNumber = updateItem.SerialNumber;
+            _warehouseDbContext.SaveChanges();
+            return itemInDb;
+        }
+
+        private ItemDto GetMappedItemDto(Items item)
+        {
+            if (item is null) throw new NotFound("Item not found.");
+            var itemDto = _mapper.Map<ItemDto>(item);
+
+            return itemDto;
+        }
+        private List<ItemDto> GetMappedItemsDto(List<Items> items)
+        {
+            if (items is null) throw new NotFound("Items not found.");
             var itemsDto = _mapper.Map<List<ItemDto>>(items);
+
             return itemsDto;
         }
 

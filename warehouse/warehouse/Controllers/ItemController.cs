@@ -12,7 +12,7 @@ using warehouse.Services.IRepositories;
 
 namespace warehouse.Controllers
 {
-    [Route("/items")]
+    [Route("/Items")]
     [ApiController]
     public class ItemController : ControllerBase
     {
@@ -23,20 +23,63 @@ namespace warehouse.Controllers
             _itemServices = itemServices;
         }
 
-        [HttpGet("getAll")]
-        public ActionResult getItemsList([FromQuery]string searchingParse, [FromQuery]int pageNumber, [FromQuery]int quantity)
+        [HttpGet("GetAll")]
+        public ActionResult<List<ItemDto>> GetItemsList([FromQuery]string searchingParse, [FromQuery]int pageNumber, [FromQuery]int quantity)
         {
             var items = _itemServices.GetItemList(searchingParse, pageNumber, quantity);
             return Ok(items);
         }
 
-        [HttpPost("create")]
-        public ActionResult CreateItem([FromBody]ItemCreateDto itemCreateDto)
+        [HttpPost("Create")]
+        public ActionResult<ItemDto> CreateItem([FromBody]ItemCreateDto itemCreateDto)
         {
 
            var item = _itemServices.CreateNewItem(itemCreateDto);
 
-           return Created("/items/get/" + item.Id, null);
+           return Created("/Get/" + item.Id, null);
         }
+        [HttpGet("{id}")]
+        public ActionResult<ItemDto> GetById([FromRoute]int id)
+        {
+            var item = _itemServices.GetById(id);
+            
+            return Ok(item);
+        }
+        [HttpDelete("{id}")]
+        public ActionResult DeleteById([FromRoute] int id)
+        {
+             _itemServices.DeleteById(id);
+
+            return NoContent();
+        }
+        [HttpGet("EAN/{ean}")]
+        public ActionResult<List<ItemDto>> GetByEan([FromRoute] string ean)
+        {
+            var items = _itemServices.GetByEan(ean);
+
+            return Ok(items);
+        }
+        [HttpGet("SerialNumber")]
+        public ActionResult<List<ItemDto>> GetBySerialNumber([FromQuery] string serialNumber)
+        {
+            var items = _itemServices.GetBySerialNumber(serialNumber);
+
+            return Ok(items);
+        }
+        [HttpGet("location")]
+        public ActionResult<List<ItemDto>> GetByLocation([FromQuery] string location)
+        {
+            var items = _itemServices.GetByLocation(location);
+
+            return Ok(items);
+        }
+        [HttpPatch("{id}")]
+        public ActionResult GetByLocation([FromBody]ItemDto itemDto, [FromRoute]int id)
+        {
+            _itemServices.Update(itemDto, id);
+
+            return Ok();
+        }
+
     }
 }

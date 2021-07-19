@@ -15,6 +15,7 @@ using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using warehouse.Database;
+using warehouse.Database.Entity;
 using warehouse.Dto;
 using warehouse.Dto.Item;
 using warehouse.Services.IRepositories;
@@ -37,7 +38,8 @@ namespace warehouse
         {
             services.AddDbContext<WarehouseDbContext>(options => options.UseSqlServer("Server=.;Database=WarehouseAPI;Trusted_Connection=True;"));
             services.AddAutoMapper(typeof(WarehouseMapper).Assembly);
-            services.AddScoped<IValidator<ItemCreateDto>, ItemValidation>();
+            services.AddScoped<IValidator<Items>, ItemValidation>();
+            services.AddScoped<IValidator<ItemCreateDto>, ItemDtoValidation>();
             services.AddScoped<IItemServices, ItemServices>();
             services.AddControllers();
             services.AddTransient<ErrorHandlingMiddleware>();
