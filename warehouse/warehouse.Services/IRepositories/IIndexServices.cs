@@ -9,5 +9,6 @@ namespace warehouse.Services.IRepositories
         IndexDto GetIndexById(int id);
         List<IndexDto> GetIndexByName(string name);
         int Create(IndexDto index);
+        void Delete(int id);
     }
 }

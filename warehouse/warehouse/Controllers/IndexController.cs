@@ -28,7 +28,7 @@ namespace warehouse.Controllers
             return Ok(indexes);
         }
         [HttpGet("Get/{id}")]
-        public ActionResult<IndexDto> getIndexById(int id)
+        public ActionResult<IndexDto> getIndexById([FromRoute]int id)
         {
             var index = _indexServices.GetIndexById(id);
             return Ok(index);
@@ -44,6 +44,13 @@ namespace warehouse.Controllers
         {
             var indexId = _indexServices.Create(index);
             return Created("Index/Get/" + indexId, null);
+        }
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            
+            _indexServices.Delete(id);
+            return NoContent();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace warehouse.Controllers
         [HttpGet("{id}")]
         public ActionResult<ItemDto> GetById([FromRoute]int id)
         {
-            var item = _itemServices.GetById(id);
+            var item = _itemServices.GetItemDtoById(id);
             
             return Ok(item);
         }

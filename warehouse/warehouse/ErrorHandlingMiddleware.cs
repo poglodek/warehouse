@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using warehouse.Exceptions;
+using warehouse.Exceptions.Exceptions;
 
 namespace warehouse
 {
@@ -25,6 +26,12 @@ namespace warehouse
             {
                 _logger.LogError(ex.Message, ex);
                 context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(ex.Message);
+            }
+            catch (CannotDelete ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                context.Response.StatusCode = 409;
                 await context.Response.WriteAsync(ex.Message);
             }
             catch (Exception ex)

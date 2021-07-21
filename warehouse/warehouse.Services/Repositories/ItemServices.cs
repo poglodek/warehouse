@@ -24,12 +24,7 @@ namespace warehouse.Services.Repositories
             _mapper = mapper;
         }
 
-        private IndexItem GetIndexItemById(int id)
-        {
-            return _warehouseDbContext
-                .IndexItems
-                .FirstOrDefault(x => x.Id == id);
-        }
+       
 
         public Items CreateNewItem(ItemCreateDto itemCreateDto)
         {
@@ -57,47 +52,11 @@ namespace warehouse.Services.Repositories
 
         }
 
-        private List<Items> SearchWithParse(string searchingParse, int pageNumber, int quantity)
-        {
-            var items = _warehouseDbContext
-                .Items
-                .Include(x => x.IndexItem)
-                .Where(x => x.IndexItem.Name.Contains(searchingParse))
-                .Skip(pageNumber - 1)
-                .Take(quantity)
-                .ToList(); ;
-            return items;
-        }
-        private List<Items> SearchWithOutParse(int pageNumber, int quantity)
-        {
-            var items = _warehouseDbContext
-                .Items
-                .Include(x => x.IndexItem)
-                .Skip(pageNumber - 1)
-                .Take(quantity)
-                .ToList(); ;
-            return items;
-        }
-
-        public ItemDto GetById(int id)
-        {
-            var item = _warehouseDbContext
-                .Items
-                .Include(x => x.IndexItem)
-                .FirstOrDefault(x => x.Id == id);
-
-            return GetMappedItemDto(item);
-
-        }
+        
 
         public void DeleteById(int id)
         {
-            var item = _warehouseDbContext
-                .Items
-                .Include(x => x.IndexItem)
-                .FirstOrDefault(x => x.Id == id);
-
-            if (item is null) throw new NotFound("Item not found.");
+            var item = GetItemById(id);
             _warehouseDbContext.Items.Remove(item);
             _warehouseDbContext.SaveChanges();
         }
@@ -135,10 +94,8 @@ namespace warehouse.Services.Repositories
 
         public void Update(ItemDto itemDto, int id)
         {
-            var item = _warehouseDbContext
-                .Items
-                .FirstOrDefault(x => x.Id == id);
-            if (item is null) throw new NotFound("Item not found.");
+            var item = GetItemById(id);
+            
 
             var updateItem = _mapper.Map<Items>(itemDto);
             var updatedItem = ItemUpdate(item, updateItem);
@@ -176,5 +133,52 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.Items.Add(items);
             _warehouseDbContext.SaveChanges();
         }
+        public ItemDto GetItemDtoById(int id)
+        {
+            var item = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .FirstOrDefault(x => x.Id == id);
+
+            return GetMappedItemDto(item);
+
+        }
+        private Items GetItemById(int id)
+        {
+            var item = _warehouseDbContext
+                .Items
+                .FirstOrDefault(x => x.Id == id);
+            if (item is null) throw new NotFound("Item not found.");
+            return item;
+        }
+        private IndexItem GetIndexItemById(int id)
+        {
+            return _warehouseDbContext
+                .IndexItems
+                .FirstOrDefault(x => x.Id == id);
+        }
+        private List<Items> SearchWithParse(string searchingParse, int pageNumber, int quantity)
+        {
+            var items = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .Where(x => x.IndexItem.Name.Contains(searchingParse))
+                .Skip(pageNumber - 1)
+                .Take(quantity)
+                .ToList(); ;
+            return items;
+        }
+        private List<Items> SearchWithOutParse(int pageNumber, int quantity)
+        {
+            var items = _warehouseDbContext
+                .Items
+                .Include(x => x.IndexItem)
+                .Skip(pageNumber - 1)
+                .Take(quantity)
+                .ToList(); ;
+            return items;
+        }
+
+
     }
 }
