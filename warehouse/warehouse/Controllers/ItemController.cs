@@ -12,8 +12,9 @@ using warehouse.Services.IRepositories;
 
 namespace warehouse.Controllers
 {
-    [Route("/Items")]
     [ApiController]
+    [Route("/Items")]
+    
     public class ItemController : ControllerBase
     {
         private readonly IItemServices _itemServices;
@@ -74,7 +75,7 @@ namespace warehouse.Controllers
             return Ok(items);
         }
         [HttpPatch("{id}")]
-        public ActionResult GetByLocation([FromBody]ItemDto itemDto, [FromRoute]int id)
+        public ActionResult Update([FromBody]ItemDto itemDto, [FromRoute]int id)
         {
             _itemServices.Update(itemDto, id);
 

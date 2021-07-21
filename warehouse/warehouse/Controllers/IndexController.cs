@@ -11,8 +11,8 @@ using warehouse.Services.IRepositories;
 
 namespace warehouse.Controllers
 {
-    [Route("/Index")]
     [ApiController]
+    [Route("/Index")]
     public class IndexController : ControllerBase
     {
         private readonly IIndexServices _indexServices;
@@ -51,6 +51,13 @@ namespace warehouse.Controllers
             
             _indexServices.Delete(id);
             return NoContent();
+        }
+        [HttpPatch("{id}")]
+        public ActionResult Update([FromBody] IndexDto itemDto, [FromRoute] int id)
+        {
+            _indexServices.Update(itemDto, id);
+
+            return Ok();
         }
     }
 }

@@ -78,6 +78,16 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.SaveChanges();
         }
 
+        public void Update(IndexDto IndexDto, int id)
+        {
+            var index = GetIndexItemById(id);
+
+            index.Description = IndexDto.Description;
+            index.Price = IndexDto.Price;
+            index.Name = IndexDto.Name;
+            _warehouseDbContext.SaveChanges();
+        }
+
         private IndexItem GetIndexItemById(int id)
         {
             var index = _warehouseDbContext

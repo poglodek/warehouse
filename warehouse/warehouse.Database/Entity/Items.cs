@@ -12,9 +12,13 @@ namespace warehouse.Database.Entity
         [Key]
         public int Id { get; set; }
         public IndexItem IndexItem { get; set; }
+
         public bool HasSerialNumber { get; set; }
+  
         public string SerialNumber { get; set; }
+   
         public int Quantity { get; set; }
+   
         public string ActualLocation { get; set; }
         public string EAN { get; set; }
         public List<Order> Orders { get; set; }
