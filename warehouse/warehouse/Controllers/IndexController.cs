@@ -6,22 +6,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using warehouse.Database;
 using warehouse.Database.Entity;
+using warehouse.Dto.Index;
+using warehouse.Services.IRepositories;
 
 namespace warehouse.Controllers
 {
-    [Route("/index")]
+    [Route("/Index")]
     [ApiController]
     public class IndexController : ControllerBase
     {
+        private readonly IIndexServices _indexServices;
 
-        public IndexController()
+        public IndexController(IIndexServices indexServices)
         {
-            
+            _indexServices = indexServices;
         }
-        [HttpGet("getAll")]
-        public ActionResult getIndexList()
+        [HttpGet("GetAll")]
+        public ActionResult<List<IndexDto>> getIndexList()
         {
-            return Ok();
+            var indexes = _indexServices.GetIndexes();
+            return Ok(indexes);
         }
     }
 }

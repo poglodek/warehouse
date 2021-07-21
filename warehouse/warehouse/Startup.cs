@@ -41,6 +41,7 @@ namespace warehouse
             services.AddScoped<IValidator<Items>, ItemValidation>();
             services.AddScoped<IValidator<ItemCreateDto>, ItemDtoValidation>();
             services.AddScoped<IItemServices, ItemServices>();
+            services.AddScoped<IIndexServices, IndexServices>();
             services.AddControllers();
             services.AddTransient<ErrorHandlingMiddleware>();
             services.AddSwaggerGen(c =>
