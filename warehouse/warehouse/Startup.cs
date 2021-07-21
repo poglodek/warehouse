@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using warehouse.Database;
 using warehouse.Database.Entity;
 using warehouse.Dto;
+using warehouse.Dto.Index;
 using warehouse.Dto.Item;
 using warehouse.Services.IRepositories;
 using warehouse.Services.Repositories;
@@ -40,6 +41,7 @@ namespace warehouse
             services.AddAutoMapper(typeof(WarehouseMapper).Assembly);
             services.AddScoped<IValidator<Items>, ItemValidation>();
             services.AddScoped<IValidator<ItemCreateDto>, ItemDtoValidation>();
+            services.AddScoped<IValidator<IndexDto>, IndexItemValidation>();
             services.AddScoped<IItemServices, ItemServices>();
             services.AddScoped<IIndexServices, IndexServices>();
             services.AddControllers();

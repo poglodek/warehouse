@@ -27,5 +27,23 @@ namespace warehouse.Controllers
             var indexes = _indexServices.GetIndexes();
             return Ok(indexes);
         }
+        [HttpGet("Get/{id}")]
+        public ActionResult<IndexDto> getIndexById(int id)
+        {
+            var index = _indexServices.GetIndexById(id);
+            return Ok(index);
+        }
+        [HttpGet("Get")]
+        public ActionResult<List<IndexDto>> getIndexByName([FromQuery]string Name)
+        {
+            var indexes = _indexServices.GetIndexByName(Name);
+            return Ok(indexes);
+        }
+        [HttpPost("Create")]
+        public ActionResult Create([FromBody] IndexDto index)
+        {
+            var indexId = _indexServices.Create(index);
+            return Created("Index/Get/" + indexId, null);
+        }
     }
 }

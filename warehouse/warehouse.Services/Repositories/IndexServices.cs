@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using warehouse.Database;
+using warehouse.Database.Entity;
 using warehouse.Dto.Index;
+using warehouse.Exceptions;
 using warehouse.Services.IRepositories;
 
 namespace warehouse.Services.Repositories
@@ -30,6 +32,40 @@ namespace warehouse.Services.Repositories
 
             var indexesDto = _mapper.Map<List<IndexDto>>(indexes);
             return indexesDto;
+        }
+
+        public IndexDto GetIndexById(int id)
+        {
+            var index = _warehouseDbContext
+                .IndexItems
+                .FirstOrDefault(x => x.Id == id);
+
+            if (index is null) throw new NotFound("ItemIndex not found.");
+
+            var indexDto = _mapper.Map<IndexDto>(index);
+            return indexDto;
+
+        }
+
+        public List<IndexDto> GetIndexByName(string name)
+        {
+            var indexes = _warehouseDbContext
+                .IndexItems
+                .Where(x => x.Name.Contains(name));
+
+            if (indexes is null) throw new NotFound("ItemIndex not found.");
+
+            var indexesDto = _mapper.Map<List<IndexDto>>(indexes);
+            return indexesDto;
+        }
+
+        public int Create(IndexDto indexDto)
+        {
+            var index = _mapper.Map<IndexItem>(indexDto);
+            _warehouseDbContext.IndexItems.Add(index);
+            _warehouseDbContext.SaveChanges();
+            return index.Id;
+
         }
     }
 }
