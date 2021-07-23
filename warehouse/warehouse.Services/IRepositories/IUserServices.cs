@@ -7,5 +7,9 @@ namespace warehouse.Services.IRepositories
     {
         List<UserDto> GetAllUsers();
         UserDto GetUserDtoById(int id);
+        List<UserDto> GetUserDtoByName(string name);
+        List<UserDto> GetUserDtoByEmail(string email);
+        List<UserDto> GetUserDtoByPhone(string phone);
+        void DeleteById(int id);
     }
 }

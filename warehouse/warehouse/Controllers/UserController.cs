@@ -35,6 +35,32 @@ namespace warehouse.Controllers
             return Ok(user);
         }
 
+        [HttpGet("GetByName")]
+        public ActionResult<List<UserDto>> GetByName([FromQuery] string name)
+        {
+            var user = _userServices.GetUserDtoByName(name);
+            return Ok(user);
+        }
+        [HttpGet("GetByEmail")]
+        public ActionResult<List<UserDto>> GetByEmail([FromQuery] string email)
+        {
+            var user = _userServices.GetUserDtoByEmail(email);
+            return Ok(user);
+        }
+        [HttpGet("GetByPhone")]
+        public ActionResult<List<UserDto>> GetById([FromQuery] string phone)
+        {
+            var user = _userServices.GetUserDtoByPhone(phone);
+            return Ok(user);
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteById([FromRoute] int id)
+        {
+            _userServices.DeleteById(id);
+            return NoContent();
+        }
+
 
     }
 }

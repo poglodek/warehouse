@@ -48,6 +48,44 @@ namespace warehouse.Services.Repositories
             return userDto;
         }
 
+        public List<UserDto> GetUserDtoByName(string name)
+        {
+            var users = _warehouseDbContext
+                .Users
+                .Where(x => x.FirstName.Contains(name) || x.LastName.Contains(name))
+                .ToList();
+            var usersDto = _mapper.Map<List<UserDto>>(users);
+            return usersDto;
+        }
+
+        public List<UserDto> GetUserDtoByEmail(string email)
+        {
+            var users = _warehouseDbContext
+                .Users
+                .Where(x => x.Email.Contains(email))
+                .ToList();
+            var usersDto = _mapper.Map<List<UserDto>>(users);
+            return usersDto;
+        }
+
+        public List<UserDto> GetUserDtoByPhone(string phone)
+        {
+            var users = _warehouseDbContext
+                .Users
+                .Where(x => x.Phone.Contains(phone))
+                .ToList();
+            var usersDto = _mapper.Map<List<UserDto>>(users);
+            return usersDto;
+        }
+
+        public void DeleteById(int id)
+        {
+            var user = GetUserById(id);
+
+            _warehouseDbContext.Users.Remove(user);
+            _warehouseDbContext.SaveChanges();
+        }
+
         private User GetUserById(int id)
         {
             var user = _warehouseDbContext
