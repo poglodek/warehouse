@@ -52,7 +52,7 @@ namespace warehouse.Controllers
             _indexServices.Delete(id);
             return NoContent();
         }
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public ActionResult Update([FromBody] IndexDto itemDto, [FromRoute] int id)
         {
             _indexServices.Update(itemDto, id);

@@ -17,7 +17,7 @@ namespace warehouse.Database.Entity
 
         public string TargetLocation { get; set; }
         public DateTime DateTime { get; set; }
-        public User WhoCompleted { get; set; }
+        public User WhoCreated { get; set; }
 
     }
 }

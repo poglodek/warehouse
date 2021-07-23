@@ -74,7 +74,7 @@ namespace warehouse.Controllers
 
             return Ok(items);
         }
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public ActionResult Update([FromBody]ItemDto itemDto, [FromRoute]int id)
         {
             _itemServices.Update(itemDto, id);
