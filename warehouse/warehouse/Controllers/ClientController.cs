@@ -6,22 +6,31 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using warehouse.Database;
 using warehouse.Database.Entity;
+using warehouse.Services.IRepositories;
 
 namespace warehouse.Controllers
 {
-    [Route("/client")]
+    [Route("/Client")]
     [ApiController]
     public class ClientController : ControllerBase
     {
+        private readonly IClientServices _clientServices;
 
-        public ClientController()
+        public ClientController(IClientServices clientServices)
         {
-
+            _clientServices = clientServices;
         }
-        [HttpGet("getAll")]
-        public ActionResult getClientsList()
+        [HttpGet("GetAll")]
+        public ActionResult<List<Client>> GetClientsList()
         {
+            var clients = _clientServices.GetAllClients();
             return Ok();
+        }
+        [HttpGet("Get/{id}")]
+        public ActionResult<Client> GetById([FromRoute]int id)
+        {
+            var client = _clientServices.GetClientById(id);
+            return Ok(client);
         }
     }
 }

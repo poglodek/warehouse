@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using warehouse.Database.Entity;
+using warehouse.Dto.Client;
 using warehouse.Dto.Index;
 using warehouse.Dto.Item;
 
@@ -21,6 +22,7 @@ namespace warehouse.Dto
                 .ForMember(x => x.Description, z => z.MapFrom(c =>c.IndexItem.Description))
                 .ReverseMap();
             CreateMap<IndexItem, IndexDto>().ReverseMap();
+            CreateMap<Database.Entity.Client, ClientDto>().ReverseMap();
         }
     }
 }

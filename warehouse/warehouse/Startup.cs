@@ -40,6 +40,7 @@ namespace warehouse
             services.AddAutoMapper(typeof(WarehouseMapper).Assembly);
             services.AddScoped<IItemServices, ItemServices>();
             services.AddScoped<IIndexServices, IndexServices>();
+            services.AddScoped<IClientServices, ClientServices>();
             services.AddControllers();
             services.AddTransient<ErrorHandlingMiddleware>();
             services.AddSwaggerGen(c =>
