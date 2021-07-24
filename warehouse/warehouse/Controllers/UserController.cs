@@ -60,7 +60,12 @@ namespace warehouse.Controllers
             _userServices.DeleteById(id);
             return NoContent();
         }
-
+        [HttpPost]
+        public ActionResult RegisterUser([FromBody] UserCreatedDto user)
+        {
+            _userServices.RegisterUser(user);
+            return NoContent();
+        }
 
     }
 }

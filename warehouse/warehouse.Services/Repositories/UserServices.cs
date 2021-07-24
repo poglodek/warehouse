@@ -1,17 +1,11 @@
-﻿using System;
+﻿using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using warehouse.Database;
 using warehouse.Database.Entity;
-using warehouse.Dto.Client;
-using warehouse.Dto.Index;
 using warehouse.Dto.User;
 using warehouse.Exceptions;
-using warehouse.Exceptions.Exceptions;
 using warehouse.Services.IRepositories;
 
 namespace warehouse.Services.Repositories
@@ -20,12 +14,15 @@ namespace warehouse.Services.Repositories
     {
         private readonly WarehouseDbContext _warehouseDbContext;
         private readonly IMapper _mapper;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
         public UserServices(WarehouseDbContext warehouseDbContext,
-            IMapper mapper)
+            IMapper mapper,
+            IPasswordHasher<User> passwordHasher)
         {
             _warehouseDbContext = warehouseDbContext;
             _mapper = mapper;
+            _passwordHasher = passwordHasher;
         }
 
 
@@ -84,6 +81,20 @@ namespace warehouse.Services.Repositories
 
             _warehouseDbContext.Users.Remove(user);
             _warehouseDbContext.SaveChanges();
+        }
+        public void RegisterUser(UserCreatedDto userDto)
+        {
+            var user = _mapper.Map<User>(userDto);
+            user.Role = GetDefaultRole();
+            var hashedPassword = _passwordHasher.HashPassword(user, user.HashedPassword);
+            user.HashedPassword = hashedPassword;
+            _warehouseDbContext.Users.Add(user);
+            _warehouseDbContext.SaveChanges();
+        }
+
+        private Role GetDefaultRole()
+        {
+           return _warehouseDbContext.Roles.First();
         }
 
         private User GetUserById(int id)
