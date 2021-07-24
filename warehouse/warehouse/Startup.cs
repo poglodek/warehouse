@@ -94,8 +94,8 @@ namespace warehouse
             app.UseRouting();
             app.UseAuthorization();
             var database = serviceProvider.GetService<WarehouseDbContext>();
-            database.Database.EnsureCreated();
-            // database.Database.Migrate();
+            
+            database.Database.Migrate();
             
 
             app.UseEndpoints(endpoints =>

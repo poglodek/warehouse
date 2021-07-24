@@ -21,7 +21,7 @@ namespace warehouse.Database.Entity
    
         public string ActualLocation { get; set; }
         public string EAN { get; set; }
-        public List<Order> Orders { get; set; }
+        public virtual List<OrderDetails> OrderDetails { get; set; }
 
     }
 }

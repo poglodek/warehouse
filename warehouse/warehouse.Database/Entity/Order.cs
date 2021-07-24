@@ -12,12 +12,12 @@ namespace warehouse.Database.Entity
     {
         [Key]
         public int Id { get; set; }
-        public Items Items { get; set; }
         public Client Client { get; set; }
-
         public string TargetLocation { get; set; }
         public DateTime DateTime { get; set; }
         public User WhoCreated { get; set; }
+        public virtual List<OrderDetails> OrderDetails { get; set; }
+
 
     }
 }

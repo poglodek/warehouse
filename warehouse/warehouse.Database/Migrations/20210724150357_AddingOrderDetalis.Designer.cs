@@ -10,15 +10,15 @@ using warehouse.Database;
 namespace warehouse.Database.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    [Migration("20210710192918_AddDataTime")]
-    partial class AddDataTime
+    [Migration("20210724150357_AddingOrderDetalis")]
+    partial class AddingOrderDetalis
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("warehouse.Database.Entity.Client", b =>
@@ -79,7 +79,10 @@ namespace warehouse.Database.Migrations
                     b.Property<int?>("IndexItemId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SerialNumberOrCount")
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SerialNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -102,24 +105,41 @@ namespace warehouse.Database.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("int");
-
                     b.Property<string>("TargetLocation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WhoCompletedId")
+                    b.Property<int?>("WhoCreatedId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("WhoCompletedId");
+                    b.HasIndex("WhoCreatedId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("warehouse.Database.Entity.OrderDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ItemsId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemsId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("warehouse.Database.Entity.Role", b =>
@@ -216,19 +236,28 @@ namespace warehouse.Database.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("ClientId");
 
-                    b.HasOne("warehouse.Database.Entity.Items", "Items")
+                    b.HasOne("warehouse.Database.Entity.User", "WhoCreated")
                         .WithMany("Orders")
-                        .HasForeignKey("ItemId");
-
-                    b.HasOne("warehouse.Database.Entity.User", "WhoCompleted")
-                        .WithMany("Orders")
-                        .HasForeignKey("WhoCompletedId");
+                        .HasForeignKey("WhoCreatedId");
 
                     b.Navigation("Client");
 
+                    b.Navigation("WhoCreated");
+                });
+
+            modelBuilder.Entity("warehouse.Database.Entity.OrderDetails", b =>
+                {
+                    b.HasOne("warehouse.Database.Entity.Items", "Items")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ItemsId");
+
+                    b.HasOne("warehouse.Database.Entity.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId");
+
                     b.Navigation("Items");
 
-                    b.Navigation("WhoCompleted");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("warehouse.Database.Entity.ShippingInfo", b =>
@@ -263,7 +292,12 @@ namespace warehouse.Database.Migrations
 
             modelBuilder.Entity("warehouse.Database.Entity.Items", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("warehouse.Database.Entity.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("warehouse.Database.Entity.Role", b =>

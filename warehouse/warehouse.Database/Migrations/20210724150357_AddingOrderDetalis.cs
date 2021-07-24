@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace warehouse.Database.Migrations
 {
-    public partial class AddDataTime : Migration
+    public partial class AddingOrderDetalis : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,7 +81,8 @@ namespace warehouse.Database.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IndexItemId = table.Column<int>(type: "int", nullable: true),
                     HasSerialNumber = table.Column<bool>(type: "bit", nullable: false),
-                    SerialNumberOrCount = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     ActualLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EAN = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -126,11 +127,10 @@ namespace warehouse.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ItemId = table.Column<int>(type: "int", nullable: true),
                     ClientId = table.Column<int>(type: "int", nullable: true),
                     TargetLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WhoCompletedId = table.Column<int>(type: "int", nullable: true)
+                    WhoCreatedId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -142,15 +142,35 @@ namespace warehouse.Database.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Orders_Items_ItemId",
-                        column: x => x.ItemId,
+                        name: "FK_Orders_Users_WhoCreatedId",
+                        column: x => x.WhoCreatedId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: true),
+                    ItemsId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Items_ItemsId",
+                        column: x => x.ItemsId,
                         principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Orders_Users_WhoCompletedId",
-                        column: x => x.WhoCompletedId,
-                        principalTable: "Users",
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -161,19 +181,24 @@ namespace warehouse.Database.Migrations
                 column: "IndexItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_ItemsId",
+                table: "OrderDetails",
+                column: "ItemsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_ClientId",
                 table: "Orders",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_ItemId",
+                name: "IX_Orders_WhoCreatedId",
                 table: "Orders",
-                column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_WhoCompletedId",
-                table: "Orders",
-                column: "WhoCompletedId");
+                column: "WhoCreatedId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShippingInfos_ClientId",
@@ -189,7 +214,7 @@ namespace warehouse.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "OrderDetails");
 
             migrationBuilder.DropTable(
                 name: "ShippingInfos");
@@ -198,13 +223,16 @@ namespace warehouse.Database.Migrations
                 name: "Items");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "IndexItems");
 
             migrationBuilder.DropTable(
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "IndexItems");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Roles");
