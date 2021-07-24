@@ -1,11 +1,18 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using warehouse.Database;
 using warehouse.Database.Entity;
 using warehouse.Dto.User;
 using warehouse.Exceptions;
+using warehouse.Services.Authentication;
 using warehouse.Services.IRepositories;
 
 namespace warehouse.Services.Repositories
@@ -15,14 +22,17 @@ namespace warehouse.Services.Repositories
         private readonly WarehouseDbContext _warehouseDbContext;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly AuthenticationSettings _authenticationSettings;
 
         public UserServices(WarehouseDbContext warehouseDbContext,
             IMapper mapper,
-            IPasswordHasher<User> passwordHasher)
+            IPasswordHasher<User> passwordHasher,
+            AuthenticationSettings authenticationSettings)
         {
             _warehouseDbContext = warehouseDbContext;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
+            _authenticationSettings = authenticationSettings;
         }
 
 
@@ -82,7 +92,7 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.Users.Remove(user);
             _warehouseDbContext.SaveChanges();
         }
-        public void RegisterUser(UserCreatedDto userDto)
+        public int RegisterUser(UserCreatedDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
             user.Role = GetDefaultRole();
@@ -90,8 +100,47 @@ namespace warehouse.Services.Repositories
             user.HashedPassword = hashedPassword;
             _warehouseDbContext.Users.Add(user);
             _warehouseDbContext.SaveChanges();
+            return user.Id;
         }
 
+        public string LoginUser(UserLoginDto userLoginDto)
+        {
+            var user = _warehouseDbContext
+                .Users
+                .Include(x => x.Role)
+                .FirstOrDefault(x => x.Email == userLoginDto.Email);
+            if (user is null)
+                throw new NotFound("User or password wrong.");
+            var result = _passwordHasher.VerifyHashedPassword(user, user.HashedPassword, userLoginDto.Password);
+            if (result == PasswordVerificationResult.Failed)
+                throw new NotFound("User or password wrong.");
+
+            var claims = GetClaims(user);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
+
+            var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer,
+                _authenticationSettings.JwtIssuer,
+                claims,
+                expires: expires,
+                signingCredentials: cred);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            return tokenHandler.WriteToken(token);
+        }
+
+        private List<Claim> GetClaims(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.Role, $"{user.Role.RoleName}")
+            };
+            return claims;
+        }
         private Role GetDefaultRole()
         {
            return _warehouseDbContext.Roles.First();

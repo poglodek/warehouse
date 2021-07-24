@@ -11,6 +11,7 @@ namespace warehouse.Services.IRepositories
         List<UserDto> GetUserDtoByEmail(string email);
         List<UserDto> GetUserDtoByPhone(string phone);
         void DeleteById(int id);
-        void RegisterUser(UserCreatedDto user);
+        int RegisterUser(UserCreatedDto user);
+        string LoginUser(UserLoginDto user);
     }
 }

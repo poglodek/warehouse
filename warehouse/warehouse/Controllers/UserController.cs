@@ -60,11 +60,18 @@ namespace warehouse.Controllers
             _userServices.DeleteById(id);
             return NoContent();
         }
-        [HttpPost]
+        [HttpPost("register")]
         public ActionResult RegisterUser([FromBody] UserCreatedDto user)
         {
-            _userServices.RegisterUser(user);
-            return NoContent();
+            Console.WriteLine("asd");
+           var userId =  _userServices.RegisterUser(user);
+            return Created("User/Get/" + userId,null);
+        }
+        [HttpPost("login")]
+        public ActionResult<string> LoginUser([FromBody] UserLoginDto user)
+        {
+            var token = _userServices.LoginUser(user);
+            return Ok(token);
         }
 
     }

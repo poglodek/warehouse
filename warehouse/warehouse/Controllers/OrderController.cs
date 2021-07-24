@@ -13,9 +13,7 @@ namespace warehouse.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly WarehouseDbContext _warehouseDbContext;
 
-      
         [HttpGet("getAll")]
         public ActionResult getOrderList()
         {

@@ -8,9 +8,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
-using warehouse.Authentication;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using warehouse.Database;
+using warehouse.Database.Entity;
 using warehouse.Dto;
+using warehouse.Dto.User;
+using warehouse.Services.Authentication;
 using warehouse.Services.IRepositories;
 using warehouse.Services.Repositories;
 
@@ -28,6 +33,7 @@ namespace warehouse
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             var authSettings = new AuthenticationSettings();
 
             Configuration.GetSection("Authentication").Bind(authSettings);
@@ -49,10 +55,12 @@ namespace warehouse
                 };
             });
             //  services.AddAuthorization(options =>
-            //{ // TODO 
+            //{ // to do
             //  });
+            services.AddControllers().AddFluentValidation();
             services.AddHttpContextAccessor();
-
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddSingleton(authSettings);
             services.AddDbContext<WarehouseDbContext>(options => options.UseSqlServer("Server=.;Database=WarehouseAPI;Trusted_Connection=True;"));
             services.AddAutoMapper(typeof(WarehouseMapper).Assembly);
             services.AddScoped<IItemServices, ItemServices>();
@@ -60,6 +68,8 @@ namespace warehouse
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IClientServices, ClientServices>();
             services.AddControllers();
+            services.AddScoped<IValidator<UserCreatedDto>, UserCreatedDtoValidation>();
+
             services.AddTransient<ErrorHandlingMiddleware>();
             services.AddSwaggerGen(c =>
             {
@@ -82,10 +92,11 @@ namespace warehouse
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseAuthorization();
             var database = serviceProvider.GetService<WarehouseDbContext>();
             database.Database.EnsureCreated();
             // database.Database.Migrate();
-            app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
