@@ -17,6 +17,12 @@ namespace warehouse.Dto.User
             RuleFor(x => x.Email).EmailAddress().NotEmpty();
             RuleFor(x => x.HashedPassword).MinimumLength(8);
             RuleFor(x => x.Phone).Matches(regex);
+            RuleFor(x => x.Email).Custom((value, context) =>
+            {
+                var email = warehouseDbContext.Users.Any(x => x.Email == value);
+                if (email)
+                    context.AddFailure("email was taken.");
+            });
         }
     }
 }
