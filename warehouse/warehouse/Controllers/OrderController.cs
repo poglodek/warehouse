@@ -6,25 +6,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using warehouse.Database;
 using warehouse.Database.Entity;
+using warehouse.Services.IRepositories;
 
 namespace warehouse.Controllers
 {
-    [Route("/order")]
+    [Route("/Order")]
     [ApiController]
     public class OrderController : ControllerBase
     {
+        private readonly IOrderServices _orderServices;
 
-        [HttpGet("getAll")]
-        public ActionResult getOrderList()
+        public OrderController(IOrderServices orderServices)
         {
-            
+            _orderServices = orderServices;
+        }
 
-            return Ok();
-        }
-        [HttpGet("/get/{orderId}")]
-        public ActionResult getOrder([FromRoute]int orderId)
+        [HttpGet("Get/{id}")]
+        public ActionResult GetOrderList([FromRoute]int id )
         {
-            return Ok();
+            var order = _orderServices.GetOrderInfoById(id);
+            return Ok(order);
         }
+
     }
 }

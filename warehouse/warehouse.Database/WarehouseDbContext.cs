@@ -17,6 +17,7 @@ namespace warehouse.Database
         public DbSet<Role> Roles { get; set; }
         public DbSet<ShippingInfo> ShippingInfos { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
         public WarehouseDbContext(DbContextOptions options): base(options)
         {

@@ -16,7 +16,7 @@ namespace warehouse.Database.Entity
         public bool HasSerialNumber { get; set; }
   
         public string SerialNumber { get; set; }
-   
+        public User WhoCreated { get; set; }
         public int Quantity { get; set; }
    
         public string ActualLocation { get; set; }

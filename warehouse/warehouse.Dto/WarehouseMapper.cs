@@ -8,6 +8,7 @@ using warehouse.Database.Entity;
 using warehouse.Dto.Client;
 using warehouse.Dto.Index;
 using warehouse.Dto.Item;
+using warehouse.Dto.Order;
 using warehouse.Dto.User;
 
 namespace warehouse.Dto
@@ -26,6 +27,7 @@ namespace warehouse.Dto
             CreateMap<Database.Entity.Client, ClientDto>().ReverseMap();
             CreateMap<Database.Entity.User, UserDto>().ReverseMap();
             CreateMap<Database.Entity.User, UserCreatedDto>().ReverseMap();
+            CreateMap<Database.Entity.Order, OrderInfoDto>().ReverseMap();
         }
     }
 }

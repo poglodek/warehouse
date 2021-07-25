@@ -65,6 +65,7 @@ namespace warehouse
             services.AddAutoMapper(typeof(WarehouseMapper).Assembly);
             services.AddScoped<IItemServices, ItemServices>();
             services.AddScoped<IIndexServices, IndexServices>();
+            services.AddScoped<IOrderServices, OrderServices>();
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IClientServices, ClientServices>();
             services.AddControllers();

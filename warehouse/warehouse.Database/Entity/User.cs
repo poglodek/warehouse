@@ -23,6 +23,7 @@ namespace warehouse.Database.Entity
         public string Phone { get; set; }
         public Role Role { get; set; }
         public List<Order> Orders { get; set; }
+        public List<Items> Items { get; set; }
 
     }
 }
