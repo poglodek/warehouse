@@ -20,11 +20,23 @@ namespace warehouse.Controllers
         {
             _orderServices = orderServices;
         }
+        [HttpGet("GetAll")]
+        public ActionResult GetById()
+        {
+            var orders = _orderServices.GetAllOrdersListDto();
+            return Ok(orders);
+        }
 
         [HttpGet("Get/{id}")]
-        public ActionResult GetOrderList([FromRoute]int id )
+        public ActionResult GetById([FromRoute]int id )
         {
             var order = _orderServices.GetOrderInfoById(id);
+            return Ok(order);
+        }
+        [HttpGet("GetByClientName")]
+        public ActionResult GetOrderList([FromQuery] string clientName)
+        {
+            var order = _orderServices.GetOrderInfoByClientName(clientName);
             return Ok(order);
         }
 

@@ -29,6 +29,19 @@ namespace warehouse.Services.Repositories
             _mapper = mapper;
         }
 
+        public List<OrderListDto> GetAllOrdersListDto()
+        {
+            var orders = _mapper.Map<List<OrderListDto>>(GetAllOrders());
+            return orders;
+        }
+
+        public List<OrderListDto> GetOrderInfoByClientName(string clientName)
+        {
+            var orders = GetAllOrdersListDto();
+            return orders.Where(x => x.WhoCreatedName.Contains(clientName)).ToList();
+
+        }
+
         public OrderInfoDto GetOrderInfoById(int id)
         {
             var order = GetOrderById(id);
@@ -42,15 +55,13 @@ namespace warehouse.Services.Repositories
 
         private Order GetOrderById(int id)
         {
-            var order = _warehouseDbContext
-                .Orders
-                .Include(x => x.Client)
-                .Include(x => x.OrderDetails)
-                .Include(x => x.WhoCreated)
+            var order = GetAllOrders()
                 .FirstOrDefault(x => x.Id == id);
             if (order is null) throw new NotFound("Order not found.");
             return order;
         }
+
+        
         private List<ItemDto> GetOrderDetailsByOrder(int orderId)
         {
             var orderList = _warehouseDbContext
@@ -68,8 +79,16 @@ namespace warehouse.Services.Repositories
 
             return items;
         }
+        
 
-
+        private List<Order> GetAllOrders()
+        {
+            return _warehouseDbContext
+                .Orders
+                .Include(x => x.Client)
+                .Include(x => x.WhoCreated)
+                .ToList();
+        }
 
     }
 }
