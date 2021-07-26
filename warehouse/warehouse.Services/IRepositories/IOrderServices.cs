@@ -8,6 +8,9 @@ namespace warehouse.Services.IRepositories
     {
         OrderInfoDto GetOrderInfoById(int id);
         List<OrderListDto> GetAllOrdersListDto();
-        List<OrderListDto> GetOrderInfoByClientName(string clientName);
+        List<OrderListDto> GetOrderListByClientName(string clientName);
+        List<OrderListDto> GetOrderListByStatus(string status);
+        List<OrderListDto> GetOrderListByTarget(string target);
+        void DeleteById(int id);
     }
 }

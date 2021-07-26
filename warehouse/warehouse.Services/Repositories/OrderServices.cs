@@ -35,17 +35,39 @@ namespace warehouse.Services.Repositories
             return orders;
         }
 
-        public List<OrderListDto> GetOrderInfoByClientName(string clientName)
+        public List<OrderListDto> GetOrderListByClientName(string clientName)
         {
             var orders = GetAllOrdersListDto();
             return orders.Where(x => x.WhoCreatedName.Contains(clientName)).ToList();
 
         }
 
+        public List<OrderListDto> GetOrderListByStatus(string status)
+        {
+            var orders = GetAllOrdersListDto();
+            return orders.Where(x => x.OrderStatus.Contains(status)).ToList();
+        }
+        public List<OrderListDto> GetOrderListByTarget(string target)
+        {
+            var orders = GetAllOrdersListDto();
+            return orders.Where(x => x.TargetLocation.Contains(target)).ToList();
+        }
+
+        public void DeleteById(int id)
+        {
+            var order = GetOrderById(id);
+            var orderDetails = GetOrderListByOrderId(order.Id);
+            _warehouseDbContext.OrderDetails.RemoveRange(orderDetails);
+            _warehouseDbContext.Orders.Remove(order);
+            _warehouseDbContext.SaveChanges();
+
+
+        }
+
         public OrderInfoDto GetOrderInfoById(int id)
         {
             var order = GetOrderById(id);
-            var orderDetails = GetOrderDetailsByOrder(order.Id);
+            var orderDetails = GetOrderDetailsDtoByOrderId(order.Id);
             var orderInfoDto = _mapper.Map<OrderInfoDto>(order);
             orderInfoDto.WhoCreated = _userServices.GetUserDtoById(order.WhoCreated.Id);
             orderInfoDto.Client = _clientServices.GetClientDtoById(order.Client.Id);
@@ -62,14 +84,9 @@ namespace warehouse.Services.Repositories
         }
 
         
-        private List<ItemDto> GetOrderDetailsByOrder(int orderId)
+        private List<ItemDto> GetOrderDetailsDtoByOrderId(int orderId)
         {
-            var orderList = _warehouseDbContext
-                .OrderDetails
-                .Include(x => x.Items)
-                .Include(x => x.Items.IndexItem)
-                .Where(x => x.Order.Id == orderId)
-                .ToList();
+            var orderList = GetOrderListByOrderId(orderId);
             var items = new List<ItemDto>();
             orderList.ForEach(order =>
             {
@@ -79,7 +96,19 @@ namespace warehouse.Services.Repositories
 
             return items;
         }
-        
+        private List<OrderDetails> GetOrderListByOrderId(int orderId)
+        {
+            var orderList = _warehouseDbContext
+                .OrderDetails
+                .Include(x => x.Items)
+                .Include(x => x.Items.IndexItem)
+                .Where(x => x.Order.Id == orderId)
+                .ToList();
+
+            return orderList;
+        }
+
+
 
         private List<Order> GetAllOrders()
         {
