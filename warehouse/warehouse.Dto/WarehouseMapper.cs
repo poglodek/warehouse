@@ -28,6 +28,7 @@ namespace warehouse.Dto
             CreateMap<Database.Entity.User, UserDto>().ReverseMap();
             CreateMap<Database.Entity.User, UserCreatedDto>().ReverseMap();
             CreateMap<Database.Entity.Order, OrderInfoDto>().ReverseMap();
+            CreateMap<Database.Entity.Order, OrderCreateDto>().ReverseMap();
             CreateMap<Database.Entity.Order, OrderListDto>().ForMember(x => x.ClientName, z => z.MapFrom(c =>c.Client.Name ))
                 .ForMember(x => x.WhoCreatedEmail, z => z.MapFrom(c =>c.WhoCreated.Email ))
                 .ForMember(x => x.WhoCreatedName, z => z.MapFrom(c =>c.WhoCreated.FirstName + c.WhoCreated.LastName ))

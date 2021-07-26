@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using warehouse.Database.Entity;
 using warehouse.Dto.User;
 
 namespace warehouse.Services.IRepositories
@@ -13,5 +14,6 @@ namespace warehouse.Services.IRepositories
         void DeleteById(int id);
         int RegisterUser(UserCreatedDto user);
         string LoginUser(UserLoginDto user);
+        public User GetUserById(int id);
     }
 }

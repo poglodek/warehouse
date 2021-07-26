@@ -146,7 +146,7 @@ namespace warehouse.Services.Repositories
            return _warehouseDbContext.Roles.First();
         }
 
-        private User GetUserById(int id)
+        public User GetUserById(int id)
         {
             var user = _warehouseDbContext
                 .Users

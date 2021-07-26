@@ -66,6 +66,7 @@ namespace warehouse
             services.AddScoped<IItemServices, ItemServices>();
             services.AddScoped<IIndexServices, IndexServices>();
             services.AddScoped<IOrderServices, OrderServices>();
+            services.AddScoped<IUserContextServices, UserContextServices>();
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IClientServices, ClientServices>();
             services.AddControllers();

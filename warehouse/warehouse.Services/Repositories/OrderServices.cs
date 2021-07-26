@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,19 @@ namespace warehouse.Services.Repositories
         private readonly WarehouseDbContext _warehouseDbContext;
         private readonly IUserServices _userServices;
         private readonly IClientServices _clientServices;
+        private readonly IUserContextServices _userContextServices;
         private readonly IMapper _mapper;
 
         public OrderServices(WarehouseDbContext warehouseDbContext,
             IUserServices userServices,
             IClientServices clientServices,
+            IUserContextServices userContextServices,
             IMapper mapper)
         {
             _warehouseDbContext = warehouseDbContext;
             _userServices = userServices;
             _clientServices = clientServices;
+            _userContextServices = userContextServices;
             _mapper = mapper;
         }
 
@@ -62,6 +66,17 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.SaveChanges();
 
 
+        }
+
+        public int Create(OrderCreateDto orderCreateDto)
+        {
+            var order = _mapper.Map<Order>(orderCreateDto);
+            order.DateTime = DateTime.Now;
+            order.Client = _clientServices.GetClientById(orderCreateDto.ClientId);
+            order.WhoCreated = _userServices.GetUserById(_userContextServices.GetUserId());
+            _warehouseDbContext.Orders.Add(order);
+            _warehouseDbContext.SaveChanges();
+            return order.Id;
         }
 
         public OrderInfoDto GetOrderInfoById(int id)

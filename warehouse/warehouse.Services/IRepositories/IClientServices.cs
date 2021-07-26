@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using warehouse.Database.Entity;
 using warehouse.Dto.Client;
 
 namespace warehouse.Services.IRepositories
@@ -12,5 +13,6 @@ namespace warehouse.Services.IRepositories
         void DeleteById(int id);
         int CreateClient(ClientDto clientDto);
         void UpdateClient(ClientDto clientDto, int id);
+        public Client GetClientById(int id);
     }
 }

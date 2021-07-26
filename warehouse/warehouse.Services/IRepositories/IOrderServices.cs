@@ -12,5 +12,6 @@ namespace warehouse.Services.IRepositories
         List<OrderListDto> GetOrderListByStatus(string status);
         List<OrderListDto> GetOrderListByTarget(string target);
         void DeleteById(int id);
+        int Create(OrderCreateDto orderCreateDto);
     }
 }

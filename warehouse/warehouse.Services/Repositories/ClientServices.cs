@@ -82,7 +82,7 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.SaveChanges();
         }
 
-        private Client GetClientById(int id)
+        public Client GetClientById(int id)
         {
             var client = _warehouseDbContext
                 .Clients

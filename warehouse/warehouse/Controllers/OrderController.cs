@@ -58,5 +58,11 @@ namespace warehouse.Controllers
             _orderServices.DeleteById(id);
             return NoContent();
         }
+        [HttpPost]
+        public ActionResult CreateOrder([FromBody] OrderCreateDto orderCreateDto)
+        {
+           var orderId =  _orderServices.Create(orderCreateDto);
+            return Created("/order/"+ orderId, null);
+        }
     }
 }
