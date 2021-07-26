@@ -18,18 +18,21 @@ namespace warehouse.Services.Repositories
         private readonly IUserServices _userServices;
         private readonly IClientServices _clientServices;
         private readonly IUserContextServices _userContextServices;
+        private readonly IItemServices _itemServices;
         private readonly IMapper _mapper;
 
         public OrderServices(WarehouseDbContext warehouseDbContext,
             IUserServices userServices,
             IClientServices clientServices,
             IUserContextServices userContextServices,
+            IItemServices itemServices,
             IMapper mapper)
         {
             _warehouseDbContext = warehouseDbContext;
             _userServices = userServices;
             _clientServices = clientServices;
             _userContextServices = userContextServices;
+            _itemServices = itemServices;
             _mapper = mapper;
         }
 
@@ -77,6 +80,39 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.Orders.Add(order);
             _warehouseDbContext.SaveChanges();
             return order.Id;
+        }
+
+        public void Update(OrderCreateDto orderUpdateDto, int id)
+        {
+            var order = GetOrderById(id);
+            order.Client = _clientServices.GetClientById(orderUpdateDto.ClientId);
+            order.TargetLocation = orderUpdateDto.TargetLocation;
+            order.OrderStatus = orderUpdateDto.OrderStatus;
+            _warehouseDbContext.SaveChanges();
+        }
+
+        public void AddItem(int id, int itemId)
+        {
+            var order = GetOrderById(id);
+            var item = _itemServices.GetItemById(itemId);
+            var orderDetails = new OrderDetails
+            {
+                Items = item,
+                Order = order
+            };
+            _warehouseDbContext.OrderDetails.Add(orderDetails);
+            _warehouseDbContext.SaveChanges();
+        }
+
+        public void RemoveItem(int id, int itemId)
+        {
+            var orderDetails = _warehouseDbContext
+                .OrderDetails
+                .Where(x => x.Order.Id == id)
+                .FirstOrDefault(x => x.Items.Id == itemId);
+            _warehouseDbContext.OrderDetails.Remove(orderDetails);
+            _warehouseDbContext.SaveChanges();
+
         }
 
         public OrderInfoDto GetOrderInfoById(int id)

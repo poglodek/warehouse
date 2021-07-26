@@ -13,5 +13,8 @@ namespace warehouse.Services.IRepositories
         List<OrderListDto> GetOrderListByTarget(string target);
         void DeleteById(int id);
         int Create(OrderCreateDto orderCreateDto);
+        void Update(OrderCreateDto orderUpdateDto, int id);
+        void AddItem(int id, int itemId);
+        void RemoveItem(int id, int itemId);
     }
 }

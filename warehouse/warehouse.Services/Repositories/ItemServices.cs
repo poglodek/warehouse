@@ -143,7 +143,7 @@ namespace warehouse.Services.Repositories
             return GetMappedItemDto(item);
 
         }
-        private Items GetItemById(int id)
+        public Items GetItemById(int id)
         {
             var item = _warehouseDbContext
                 .Items

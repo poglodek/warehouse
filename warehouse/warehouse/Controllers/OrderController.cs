@@ -64,5 +64,23 @@ namespace warehouse.Controllers
            var orderId =  _orderServices.Create(orderCreateDto);
             return Created("/order/"+ orderId, null);
         }
+        [HttpPut("{id}")]
+        public ActionResult UpDateOrder([FromBody] OrderCreateDto orderUpdateDto, [FromRoute]int id)
+        {
+             _orderServices.Update(orderUpdateDto, id);
+            return Ok();
+        }
+        [HttpPut("addItem/{id}")]
+        public ActionResult AddItem([FromRoute] int id, [FromQuery]int itemId)
+        {
+            _orderServices.AddItem(id, itemId);
+            return Ok();
+        }
+        [HttpDelete("removeItem/{id}")]
+        public ActionResult RemoveItem([FromRoute] int id, [FromQuery] int itemId)
+        {
+            _orderServices.RemoveItem(id, itemId);
+            return NoContent();
+        }
     }
 }

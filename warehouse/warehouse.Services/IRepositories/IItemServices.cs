@@ -15,5 +15,6 @@ namespace warehouse.Services.IRepositories
         List<ItemDto> GetByLocation(string location);
         List<ItemDto> GetBySerialNumber(string serialNumber);
         void Update(ItemDto itemDto, int id);
+        public Items GetItemById(int id);
     }
 }
