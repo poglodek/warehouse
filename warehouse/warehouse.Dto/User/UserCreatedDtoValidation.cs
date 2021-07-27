@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using FluentValidation;
 using warehouse.Database;
 using warehouse.Dto.User;
 
-namespace warehouse.Dto.User
+namespace warehouse.Dto.ShippingInfo
 {
     public class UserCreatedDtoValidation : AbstractValidator<UserCreatedDto>
     {

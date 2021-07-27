@@ -16,5 +16,6 @@ namespace warehouse.Services.IRepositories
         void Update(OrderCreateDto orderUpdateDto, int id);
         void AddItem(int id, int itemId);
         void RemoveItem(int id, int itemId);
+        public Order GetOrderById(int id);
     }
 }

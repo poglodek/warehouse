@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using warehouse.Database;
 
 namespace warehouse.Database.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    partial class WarehouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210727162832_AddingTargetLoctaion")]
+    partial class AddingTargetLoctaion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,9 +184,6 @@ namespace warehouse.Database.Migrations
                     b.Property<bool>("IsPriority")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<double>("ShippingPrice")
                         .HasColumnType("float");
 
@@ -197,8 +196,6 @@ namespace warehouse.Database.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("ShippingInfos");
                 });
@@ -286,13 +283,7 @@ namespace warehouse.Database.Migrations
                         .WithMany("ShippingInfo")
                         .HasForeignKey("ClientId");
 
-                    b.HasOne("warehouse.Database.Entity.Order", "Order")
-                        .WithMany("ShippingInfo")
-                        .HasForeignKey("OrderId");
-
                     b.Navigation("Client");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("warehouse.Database.Entity.User", b =>
@@ -324,8 +315,6 @@ namespace warehouse.Database.Migrations
             modelBuilder.Entity("warehouse.Database.Entity.Order", b =>
                 {
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("ShippingInfo");
                 });
 
             modelBuilder.Entity("warehouse.Database.Entity.Role", b =>

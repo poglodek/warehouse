@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using warehouse.Database;
 using warehouse.Database.Entity;
 using warehouse.Dto;
+using warehouse.Dto.ShippingInfo;
 using warehouse.Dto.User;
 using warehouse.Services.Authentication;
 using warehouse.Services.IRepositories;
@@ -66,11 +67,13 @@ namespace warehouse
             services.AddScoped<IItemServices, ItemServices>();
             services.AddScoped<IIndexServices, IndexServices>();
             services.AddScoped<IOrderServices, OrderServices>();
+            services.AddScoped<IShippingInfoServices, ShippingInfoServices>();
             services.AddScoped<IUserContextServices, UserContextServices>();
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IClientServices, ClientServices>();
             services.AddControllers();
             services.AddScoped<IValidator<UserCreatedDto>, UserCreatedDtoValidation>();
+            services.AddScoped<IValidator<ShippingInfoCreateDto>, ShippingInfoCreateDtoValidation>();
 
             services.AddTransient<ErrorHandlingMiddleware>();
             services.AddSwaggerGen(c =>

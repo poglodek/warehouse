@@ -9,6 +9,7 @@ using warehouse.Dto.Client;
 using warehouse.Dto.Index;
 using warehouse.Dto.Item;
 using warehouse.Dto.Order;
+using warehouse.Dto.ShippingInfo;
 using warehouse.Dto.User;
 
 namespace warehouse.Dto
@@ -29,6 +30,10 @@ namespace warehouse.Dto
             CreateMap<Database.Entity.User, UserCreatedDto>().ReverseMap();
             CreateMap<Database.Entity.Order, OrderInfoDto>().ReverseMap();
             CreateMap<Database.Entity.Order, OrderCreateDto>().ReverseMap();
+            CreateMap<Database.Entity.ShippingInfo, ShippingInfoCreateDto>().ReverseMap();
+            CreateMap<Database.Entity.ShippingInfo, ShippingInfoDto>().ForMember(x => x.ClientName, c=> c.MapFrom(z => z.Client.Name))
+                .ForMember(x => x.OrderId, c => c.MapFrom(z => z.Order.Id))
+                .ReverseMap();
             CreateMap<Database.Entity.Order, OrderListDto>().ForMember(x => x.ClientName, z => z.MapFrom(c =>c.Client.Name ))
                 .ForMember(x => x.WhoCreatedEmail, z => z.MapFrom(c =>c.WhoCreated.Email ))
                 .ForMember(x => x.WhoCreatedName, z => z.MapFrom(c =>c.WhoCreated.FirstName + c.WhoCreated.LastName ))

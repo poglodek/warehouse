@@ -13,8 +13,10 @@ namespace warehouse.Database.Entity
         [Key]
         public int Id { get; set; }
         public Client Client { get; set; }
+        public Order Order { get; set; }
 
         public string TrackingNumber { get; set; }
+        public string TargetLocation { get; set; }
 
         public bool IsInsurance { get; set; }
 

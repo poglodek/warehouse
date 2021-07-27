@@ -126,7 +126,7 @@ namespace warehouse.Services.Repositories
             return orderInfoDto;
         }
 
-        private Order GetOrderById(int id)
+        public Order GetOrderById(int id)
         {
             var order = GetAllOrders()
                 .FirstOrDefault(x => x.Id == id);

@@ -18,6 +18,7 @@ namespace warehouse.Database.Entity
         public DateTime DateTime { get; set; }
         public User WhoCreated { get; set; }
         public virtual List<OrderDetails> OrderDetails { get; set; }
+        public virtual List<ShippingInfo> ShippingInfo { get; set; }
 
 
     }
