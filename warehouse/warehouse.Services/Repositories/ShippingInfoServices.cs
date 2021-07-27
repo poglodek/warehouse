@@ -50,11 +50,7 @@ namespace warehouse.Services.Repositories
 
         public ShippingInfoDto GetShippingInfoDtoById(int id)
         {
-            var shippingInfo = _warehouseDbContext
-                .ShippingInfos
-                .Include(x => x.Client)
-                .Include(x => x.Order)
-                .FirstOrDefault(x => x.Id == id);
+            var shippingInfo = GetShippingInfoById(id);
             if (shippingInfo is null) throw new NotFound("Shipping info not found.");
 
             var shippingInfoDto = _mapper.Map<ShippingInfoDto>(shippingInfo);
@@ -114,6 +110,37 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.ShippingInfos.Add(shippingInfo);
             _warehouseDbContext.SaveChanges();
             return shippingInfo.Id;
+        }
+
+        public void UpdateShippingInfo(ShippingInfoUpdateDto shippingInfoUpdateDto, int id)
+        {
+            var shippingInfo = GetShippingInfoById(id);
+
+            shippingInfo.TargetLocation = shippingInfoUpdateDto.TargetLocation;
+            shippingInfo.TrackingNumber = shippingInfoUpdateDto.TrackingNumber;
+            shippingInfo.IsInsurance = shippingInfoUpdateDto.IsInsurance;
+            shippingInfo.IsPriority = shippingInfoUpdateDto.IsPriority;
+            shippingInfo.ShippingPrice = shippingInfoUpdateDto.ShippingPrice;
+            _warehouseDbContext.SaveChanges();
+        }
+
+        public void DeleteShippingInfoById(int id)
+        {
+            var shippingInfo = GetShippingInfoById(id);
+            _warehouseDbContext.ShippingInfos.Remove(shippingInfo);
+            _warehouseDbContext.SaveChanges();
+        }
+
+        private ShippingInfo GetShippingInfoById(int id)
+        {
+            var shippingInfo = _warehouseDbContext
+                .ShippingInfos
+                .Include(x => x.Client)
+                .Include(x => x.Order)
+                .FirstOrDefault(x => x.Id == id);
+            if (shippingInfo is null) throw new NotFound("Shipping info not found.");
+
+            return shippingInfo;
         }
     }
 }

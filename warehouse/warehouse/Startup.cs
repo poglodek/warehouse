@@ -74,6 +74,7 @@ namespace warehouse
             services.AddControllers();
             services.AddScoped<IValidator<UserCreatedDto>, UserCreatedDtoValidation>();
             services.AddScoped<IValidator<ShippingInfoCreateDto>, ShippingInfoCreateDtoValidation>();
+            services.AddScoped<IValidator<ShippingInfoUpdateDto>, ShippingInfoUpdateDtoValidation>();
 
             services.AddTransient<ErrorHandlingMiddleware>();
             services.AddSwaggerGen(c =>

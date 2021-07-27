@@ -7,7 +7,6 @@ namespace warehouse.Dto.User
 {
     public class ShippingInfoCreateDtoValidation : AbstractValidator<ShippingInfoCreateDto>
     {
-        private const string regex = @"[0-9]{9}";
         public ShippingInfoCreateDtoValidation(WarehouseDbContext warehouseDbContext)
         {
             RuleFor(x => x.ClientId).NotEmpty();

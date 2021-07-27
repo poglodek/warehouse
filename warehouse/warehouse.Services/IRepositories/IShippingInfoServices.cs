@@ -13,5 +13,7 @@ namespace warehouse.Services.IRepositories
         List<ShippingInfoDto> GetShippingInfoDtoByPriority(string priority);
         List<ShippingInfoDto> GetShippingInfoDtoByClientId(int id);
         int CreateShippingInfo(ShippingInfoCreateDto shippingInfoCreateDto);
+        void UpdateShippingInfo(ShippingInfoUpdateDto shippingInfoUpdateDto, int id);
+        void DeleteShippingInfoById(int id);
     }
 }

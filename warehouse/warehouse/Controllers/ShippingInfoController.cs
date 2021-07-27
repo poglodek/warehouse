@@ -65,5 +65,17 @@ namespace warehouse.Controllers
             var id = _shippingInfoServices.CreateShippingInfo(shippingInfoCreateDto);
             return Created("/ShippingInfo/get/" + id, null);
         }
+        [HttpPatch("{id}")]
+        public ActionResult<List<ShippingInfoDto>> UpdateShippingInfo([FromBody] ShippingInfoUpdateDto shippingInfoUpdateDto,[FromRoute] int id )
+        {
+            _shippingInfoServices.UpdateShippingInfo(shippingInfoUpdateDto, id);
+            return Ok();
+        }
+        [HttpDelete("{id}")]
+        public ActionResult<List<ShippingInfoDto>> DeleteShippingInfoById([FromRoute] int id)
+        {
+            _shippingInfoServices.DeleteShippingInfoById(id);
+            return NoContent();
+        }
     }
 }
