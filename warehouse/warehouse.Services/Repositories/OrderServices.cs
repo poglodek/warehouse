@@ -1,6 +1,6 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using warehouse.Database;
@@ -46,7 +46,6 @@ namespace warehouse.Services.Repositories
         {
             var orders = GetAllOrdersListDto();
             return orders.Where(x => x.WhoCreatedName.Contains(clientName)).ToList();
-
         }
 
         public List<OrderListDto> GetOrderListByStatus(string status)
@@ -54,6 +53,7 @@ namespace warehouse.Services.Repositories
             var orders = GetAllOrdersListDto();
             return orders.Where(x => x.OrderStatus.Contains(status)).ToList();
         }
+
         public List<OrderListDto> GetOrderListByTarget(string target)
         {
             var orders = GetAllOrdersListDto();
@@ -67,8 +67,6 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.OrderDetails.RemoveRange(orderDetails);
             _warehouseDbContext.Orders.Remove(order);
             _warehouseDbContext.SaveChanges();
-
-
         }
 
         public int Create(OrderCreateDto orderCreateDto)
@@ -112,7 +110,6 @@ namespace warehouse.Services.Repositories
                 .FirstOrDefault(x => x.Items.Id == itemId);
             _warehouseDbContext.OrderDetails.Remove(orderDetails);
             _warehouseDbContext.SaveChanges();
-
         }
 
         public OrderInfoDto GetOrderInfoById(int id)
@@ -134,7 +131,6 @@ namespace warehouse.Services.Repositories
             return order;
         }
 
-        
         private List<ItemDto> GetOrderDetailsDtoByOrderId(int orderId)
         {
             var orderList = GetOrderListByOrderId(orderId);
@@ -147,6 +143,7 @@ namespace warehouse.Services.Repositories
 
             return items;
         }
+
         private List<OrderDetails> GetOrderListByOrderId(int orderId)
         {
             var orderList = _warehouseDbContext
@@ -159,8 +156,6 @@ namespace warehouse.Services.Repositories
             return orderList;
         }
 
-
-
         private List<Order> GetAllOrders()
         {
             return _warehouseDbContext
@@ -169,6 +164,5 @@ namespace warehouse.Services.Repositories
                 .Include(x => x.WhoCreated)
                 .ToList();
         }
-
     }
 }

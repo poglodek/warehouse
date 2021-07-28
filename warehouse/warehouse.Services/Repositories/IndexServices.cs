@@ -1,10 +1,7 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using warehouse.Database;
 using warehouse.Database.Entity;
 using warehouse.Dto.Index;
@@ -42,7 +39,6 @@ namespace warehouse.Services.Repositories
 
             var indexDto = _mapper.Map<IndexDto>(index);
             return indexDto;
-
         }
 
         public List<IndexDto> GetIndexByName(string name)
@@ -63,7 +59,6 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.IndexItems.Add(index);
             _warehouseDbContext.SaveChanges();
             return index.Id;
-
         }
 
         public void Delete(int id)
@@ -95,7 +90,7 @@ namespace warehouse.Services.Repositories
                 .FirstOrDefault(x => x.Id == id);
 
             if (index is null) throw new NotFound("ItemIndex not found.");
-            
+
             return index;
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace warehouse.Dto.ShippingInfo
+﻿namespace warehouse.Dto.ShippingInfo
 {
     public class ShippingInfoCreateDto
     {

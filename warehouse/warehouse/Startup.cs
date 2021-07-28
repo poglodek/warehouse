@@ -1,5 +1,8 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,9 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Identity;
 using warehouse.Database;
 using warehouse.Database.Entity;
 using warehouse.Dto;
@@ -34,7 +34,6 @@ namespace warehouse
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             var authSettings = new AuthenticationSettings();
 
             Configuration.GetSection("Authentication").Bind(authSettings);
@@ -100,9 +99,8 @@ namespace warehouse
             app.UseRouting();
             app.UseAuthorization();
             var database = serviceProvider.GetService<WarehouseDbContext>();
-            
+
             database.Database.Migrate();
-            
 
             app.UseEndpoints(endpoints =>
             {

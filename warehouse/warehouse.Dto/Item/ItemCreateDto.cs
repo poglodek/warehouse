@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using warehouse.Database.Entity;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace warehouse.Dto.Item
 {
@@ -12,12 +6,16 @@ namespace warehouse.Dto.Item
     {
         [Required]
         public int IndexItemId { get; set; }
+
         [Required]
         public bool HasSerialNumber { get; set; }
+
         [Required]
         public string SerialNumber { get; set; }
+
         [Required]
         public int Quantity { get; set; }
+
         [Required]
         public string ActualLocation { get; set; }
 

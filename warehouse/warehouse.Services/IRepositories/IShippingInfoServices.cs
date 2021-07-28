@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using warehouse.Dto;
 using warehouse.Dto.ShippingInfo;
 
 namespace warehouse.Services.IRepositories

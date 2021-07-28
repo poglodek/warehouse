@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace warehouse.Database.Entity
 {
@@ -17,13 +13,12 @@ namespace warehouse.Database.Entity
         public string LastName { get; set; }
 
         public string Email { get; set; }
- 
+
         public string HashedPassword { get; set; }
- 
+
         public string Phone { get; set; }
         public Role Role { get; set; }
         public List<Order> Orders { get; set; }
         public List<Items> Items { get; set; }
-
     }
 }

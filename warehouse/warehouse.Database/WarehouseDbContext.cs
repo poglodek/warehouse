@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using warehouse.Database.Entity;
 
 namespace warehouse.Database
 {
-    public class WarehouseDbContext: DbContext
+    public class WarehouseDbContext : DbContext
     {
         public DbSet<Client> Clients { get; set; }
         public DbSet<IndexItem> IndexItems { get; set; }
@@ -19,9 +14,8 @@ namespace warehouse.Database
         public DbSet<User> Users { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
 
-        public WarehouseDbContext(DbContextOptions options): base(options)
+        public WarehouseDbContext(DbContextOptions options) : base(options)
         {
-            
         }
     }
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace warehouse.Database.Entity
 {
@@ -11,17 +7,17 @@ namespace warehouse.Database.Entity
     {
         [Key]
         public int Id { get; set; }
+
         public IndexItem IndexItem { get; set; }
 
         public bool HasSerialNumber { get; set; }
-  
+
         public string SerialNumber { get; set; }
         public User WhoCreated { get; set; }
         public int Quantity { get; set; }
-   
+
         public string ActualLocation { get; set; }
         public string EAN { get; set; }
         public virtual List<OrderDetails> OrderDetails { get; set; }
-
     }
 }

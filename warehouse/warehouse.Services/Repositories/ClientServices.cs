@@ -1,16 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using warehouse.Database;
 using warehouse.Database.Entity;
 using warehouse.Dto.Client;
-using warehouse.Dto.Index;
 using warehouse.Exceptions;
-using warehouse.Exceptions.Exceptions;
 using warehouse.Services.IRepositories;
 
 namespace warehouse.Services.Repositories
@@ -27,10 +21,9 @@ namespace warehouse.Services.Repositories
             _mapper = mapper;
         }
 
-
         public List<ClientDto> GetAllClients()
         {
-            var clients =  _warehouseDbContext.Clients.ToList();
+            var clients = _warehouseDbContext.Clients.ToList();
 
             var clientsDto = _mapper.Map<List<ClientDto>>(clients);
             return clientsDto;
@@ -48,8 +41,9 @@ namespace warehouse.Services.Repositories
         public List<ClientDto> GetClientsByName(string name)
         {
             var clients = GetClientsDto();
-            return  clients.Where(x => x.Name.Contains(name)).ToList();
+            return clients.Where(x => x.Name.Contains(name)).ToList();
         }
+
         public List<ClientDto> GetClientsByAddress(string address)
         {
             var clients = GetClientsDto();
@@ -90,7 +84,6 @@ namespace warehouse.Services.Repositories
             if (client is null) throw new NotFound("Client not found.");
             return client;
         }
-
 
         private List<ClientDto> GetClientsDto()
         {

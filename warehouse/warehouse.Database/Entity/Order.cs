@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using warehouse.Database.Entity;
 
 namespace warehouse.Database.Entity
 {
@@ -12,6 +8,7 @@ namespace warehouse.Database.Entity
     {
         [Key]
         public int Id { get; set; }
+
         public Client Client { get; set; }
         public string TargetLocation { get; set; }
         public string OrderStatus { get; set; }
@@ -19,7 +16,5 @@ namespace warehouse.Database.Entity
         public User WhoCreated { get; set; }
         public virtual List<OrderDetails> OrderDetails { get; set; }
         public virtual List<ShippingInfo> ShippingInfo { get; set; }
-
-
     }
 }

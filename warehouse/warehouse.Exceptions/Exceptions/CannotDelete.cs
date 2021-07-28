@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace warehouse.Exceptions.Exceptions
 {
@@ -10,7 +6,6 @@ namespace warehouse.Exceptions.Exceptions
     {
         public CannotDelete(string message) : base(message)
         {
-            
         }
     }
 }

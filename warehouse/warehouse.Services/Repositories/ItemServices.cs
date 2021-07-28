@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +15,12 @@ namespace warehouse.Services.Repositories
         private readonly WarehouseDbContext _warehouseDbContext;
         private readonly IMapper _mapper;
 
-
         public ItemServices(WarehouseDbContext warehouseDbContext,
             IMapper mapper)
         {
             _warehouseDbContext = warehouseDbContext;
             _mapper = mapper;
         }
-
-       
 
         public Items CreateNewItem(ItemCreateDto itemCreateDto)
         {
@@ -36,9 +32,8 @@ namespace warehouse.Services.Repositories
             return newItem;
         }
 
-        public List<ItemDto> GetItemList(string searchingParse,  int pageNumber, int quantity)
+        public List<ItemDto> GetItemList(string searchingParse, int pageNumber, int quantity)
         {
-
             if (pageNumber == 0) pageNumber = 1;
             if (quantity == 0) quantity = 5;
 
@@ -47,12 +42,9 @@ namespace warehouse.Services.Repositories
 
             var itemsDto = GetMappedItemsDto(
                 items
-                .ToList()); 
+                .ToList());
             return itemsDto;
-
         }
-
-        
 
         public void DeleteById(int id)
         {
@@ -67,9 +59,8 @@ namespace warehouse.Services.Repositories
                 .Items
                 .Include(x => x.IndexItem)
                 .Where(x => x.EAN.Contains(ean))
-                .ToList(); 
+                .ToList();
             return GetMappedItemsDto(items);
-
         }
 
         public List<ItemDto> GetByLocation(string location)
@@ -95,11 +86,9 @@ namespace warehouse.Services.Repositories
         public void Update(ItemDto itemDto, int id)
         {
             var item = GetItemById(id);
-            
 
             var updateItem = _mapper.Map<Items>(itemDto);
             var updatedItem = ItemUpdate(item, updateItem);
-            
         }
 
         private Items ItemUpdate(Items itemInDb, Items updateItem)
@@ -120,6 +109,7 @@ namespace warehouse.Services.Repositories
 
             return itemDto;
         }
+
         private List<ItemDto> GetMappedItemsDto(List<Items> items)
         {
             if (items is null) throw new NotFound("Items not found.");
@@ -133,6 +123,7 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.Items.Add(items);
             _warehouseDbContext.SaveChanges();
         }
+
         public ItemDto GetItemDtoById(int id)
         {
             var item = _warehouseDbContext
@@ -141,8 +132,8 @@ namespace warehouse.Services.Repositories
                 .FirstOrDefault(x => x.Id == id);
 
             return GetMappedItemDto(item);
-
         }
+
         public Items GetItemById(int id)
         {
             var item = _warehouseDbContext
@@ -151,12 +142,14 @@ namespace warehouse.Services.Repositories
             if (item is null) throw new NotFound("Item not found.");
             return item;
         }
+
         private IndexItem GetIndexItemById(int id)
         {
             return _warehouseDbContext
                 .IndexItems
                 .FirstOrDefault(x => x.Id == id);
         }
+
         private List<Items> SearchWithParse(string searchingParse, int pageNumber, int quantity)
         {
             var items = _warehouseDbContext
@@ -168,6 +161,7 @@ namespace warehouse.Services.Repositories
                 .ToList(); ;
             return items;
         }
+
         private List<Items> SearchWithOutParse(int pageNumber, int quantity)
         {
             var items = _warehouseDbContext
@@ -178,7 +172,5 @@ namespace warehouse.Services.Repositories
                 .ToList(); ;
             return items;
         }
-
-
     }
 }

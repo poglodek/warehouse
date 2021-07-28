@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using FluentValidation;
+﻿using FluentValidation;
 using warehouse.Database;
 using warehouse.Dto.ShippingInfo;
 
@@ -14,8 +13,6 @@ namespace warehouse.Dto.User
             RuleFor(x => x.IsInsurance).NotEmpty();
             RuleFor(x => x.IsPriority).NotEmpty();
             RuleFor(x => x.TargetLocation).NotEmpty();
-
-            
         }
     }
 }

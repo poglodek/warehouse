@@ -1,11 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using warehouse.Database;
-using warehouse.Database.Entity;
 using warehouse.Dto.Client;
 using warehouse.Services.IRepositories;
 
@@ -21,30 +15,35 @@ namespace warehouse.Controllers
         {
             _clientServices = clientServices;
         }
+
         [HttpGet("GetAll")]
         public ActionResult<List<ClientDto>> GetClientsList()
         {
             var clients = _clientServices.GetAllClients();
             return Ok(clients);
         }
+
         [HttpGet("{id}")]
-        public ActionResult<ClientDto> GetById([FromRoute]int id)
+        public ActionResult<ClientDto> GetById([FromRoute] int id)
         {
             var client = _clientServices.GetClientDtoById(id);
             return Ok(client);
         }
+
         [HttpGet("GetByName")]
         public ActionResult<List<ClientDto>> GetByName([FromQuery] string name)
         {
             var clients = _clientServices.GetClientsByName(name);
             return Ok(clients);
         }
+
         [HttpGet("GetByAddress")]
         public ActionResult<List<ClientDto>> GetByAddress([FromQuery] string address)
         {
             var clients = _clientServices.GetClientsByAddress(address);
             return Ok(clients);
         }
+
         [HttpDelete("{id}")]
         public ActionResult DeleteById([FromRoute] int id)
         {
@@ -58,13 +57,12 @@ namespace warehouse.Controllers
             var newClientId = _clientServices.CreateClient(clientDto);
             return Created("/Client/get/" + newClientId, null);
         }
+
         [HttpPut("{id}")]
-        public ActionResult UpdateClient([FromBody] ClientDto clientDto, [FromRoute]int id)
+        public ActionResult UpdateClient([FromBody] ClientDto clientDto, [FromRoute] int id)
         {
-             _clientServices.UpdateClient(clientDto, id);
+            _clientServices.UpdateClient(clientDto, id);
             return Ok();
         }
-
-
     }
 }

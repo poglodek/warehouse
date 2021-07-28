@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace warehouse.Database.Entity
 {
@@ -12,6 +6,7 @@ namespace warehouse.Database.Entity
     {
         [Key]
         public int Id { get; set; }
+
         public virtual Order Order { get; set; }
         public virtual Items Items { get; set; }
     }

@@ -1,13 +1,13 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using warehouse.Database;
 using warehouse.Database.Entity;
 using warehouse.Dto.User;
@@ -34,7 +34,6 @@ namespace warehouse.Services.Repositories
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;
         }
-
 
         public List<UserDto> GetAllUsers()
         {
@@ -92,6 +91,7 @@ namespace warehouse.Services.Repositories
             _warehouseDbContext.Users.Remove(user);
             _warehouseDbContext.SaveChanges();
         }
+
         public int RegisterUser(UserCreatedDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
@@ -141,9 +141,10 @@ namespace warehouse.Services.Repositories
             };
             return claims;
         }
+
         private Role GetDefaultRole()
         {
-           return _warehouseDbContext.Roles.First();
+            return _warehouseDbContext.Roles.First();
         }
 
         public User GetUserById(int id)

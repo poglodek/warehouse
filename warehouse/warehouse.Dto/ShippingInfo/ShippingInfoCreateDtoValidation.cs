@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using FluentValidation;
+﻿using FluentValidation;
+using System.Linq;
 using warehouse.Database;
 using warehouse.Dto.ShippingInfo;
 

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 using warehouse.Exceptions;
 using warehouse.Exceptions.Exceptions;
 
@@ -11,11 +11,11 @@ namespace warehouse
     {
         private readonly ILogger<ErrorHandlingMiddleware> _logger;
 
-
         public ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger)
         {
             _logger = logger;
         }
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try

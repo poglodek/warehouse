@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using warehouse.Exceptions;
 using warehouse.Services.IRepositories;
 
@@ -27,13 +22,11 @@ namespace warehouse.Services.Repositories
             try
             {
                 return int.Parse(GetUser.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value);
-                
             }
             catch
             {
                 throw new NotFound("User not found.");
             }
-                
         }
     }
 }

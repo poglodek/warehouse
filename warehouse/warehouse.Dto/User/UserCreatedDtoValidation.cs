@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using FluentValidation;
+﻿using FluentValidation;
+using System.Linq;
 using warehouse.Database;
 using warehouse.Dto.User;
 
@@ -8,6 +8,7 @@ namespace warehouse.Dto.ShippingInfo
     public class UserCreatedDtoValidation : AbstractValidator<UserCreatedDto>
     {
         private const string regex = @"[0-9]{9}";
+
         public UserCreatedDtoValidation(WarehouseDbContext warehouseDbContext)
         {
             RuleFor(x => x.Email).EmailAddress().NotEmpty();
