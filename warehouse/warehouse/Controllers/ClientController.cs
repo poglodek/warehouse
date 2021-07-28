@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using warehouse.Dto.Client;
 using warehouse.Services.IRepositories;
 
 namespace warehouse.Controllers
 {
+    [Authorize]
     [Route("/Client")]
     [ApiController]
     public class ClientController : ControllerBase
@@ -15,7 +17,7 @@ namespace warehouse.Controllers
         {
             _clientServices = clientServices;
         }
-
+        
         [HttpGet("GetAll")]
         public ActionResult<List<ClientDto>> GetClientsList()
         {
@@ -43,7 +45,7 @@ namespace warehouse.Controllers
             var clients = _clientServices.GetClientsByAddress(address);
             return Ok(clients);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public ActionResult DeleteById([FromRoute] int id)
         {
@@ -52,12 +54,13 @@ namespace warehouse.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult CreateClient([FromBody] ClientDto clientDto)
         {
             var newClientId = _clientServices.CreateClient(clientDto);
             return Created("/Client/get/" + newClientId, null);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public ActionResult UpdateClient([FromBody] ClientDto clientDto, [FromRoute] int id)
         {

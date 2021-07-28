@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using warehouse.Database;
 using warehouse.Database.Entity;
 using warehouse.Dto.Item;
 using warehouse.Dto.Order;
 using warehouse.Exceptions;
+using warehouse.Exceptions.Exceptions;
 using warehouse.Services.IRepositories;
 
 namespace warehouse.Services.Repositories
@@ -62,6 +64,7 @@ namespace warehouse.Services.Repositories
 
         public void DeleteById(int id)
         {
+            if (!IfUserCreated(_userContextServices.GetUserId(), id)) throw new ForbiddenException("Forbidden");
             var order = GetOrderById(id);
             var orderDetails = GetOrderListByOrderId(order.Id);
             _warehouseDbContext.OrderDetails.RemoveRange(orderDetails);
@@ -82,6 +85,7 @@ namespace warehouse.Services.Repositories
 
         public void Update(OrderCreateDto orderUpdateDto, int id)
         {
+            if (!IfUserCreated(_userContextServices.GetUserId(), id)) throw new ForbiddenException("Forbidden");
             var order = GetOrderById(id);
             order.Client = _clientServices.GetClientById(orderUpdateDto.ClientId);
             order.TargetLocation = orderUpdateDto.TargetLocation;
@@ -91,6 +95,7 @@ namespace warehouse.Services.Repositories
 
         public void AddItem(int id, int itemId)
         {
+            if (!IfUserCreated(_userContextServices.GetUserId(), id)) throw new ForbiddenException("Forbidden");
             var order = GetOrderById(id);
             var item = _itemServices.GetItemById(itemId);
             var orderDetails = new OrderDetails
@@ -104,6 +109,7 @@ namespace warehouse.Services.Repositories
 
         public void RemoveItem(int id, int itemId)
         {
+            if (!IfUserCreated(_userContextServices.GetUserId(), id)) throw new ForbiddenException("Forbidden");
             var orderDetails = _warehouseDbContext
                 .OrderDetails
                 .Where(x => x.Order.Id == id)
@@ -163,6 +169,17 @@ namespace warehouse.Services.Repositories
                 .Include(x => x.Client)
                 .Include(x => x.WhoCreated)
                 .ToList();
+        }
+
+        private bool IfUserCreated(int userId, int orderId)
+        {
+            var whoCreatedId = GetOrderById(orderId)
+                .WhoCreated
+                .Id;
+            var role = _userContextServices.GetUser.FindFirst(x => x.Type == ClaimTypes.Role).Value;
+            if (userId == whoCreatedId) return true;
+            else if (role == "Admin") return true;
+            return false;
         }
     }
 }

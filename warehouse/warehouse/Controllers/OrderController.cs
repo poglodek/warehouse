@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using warehouse.Dto.Order;
 using warehouse.Services.IRepositories;
 
@@ -7,6 +8,7 @@ namespace warehouse.Controllers
 {
     [Route("/Order")]
     [ApiController]
+    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IOrderServices _orderServices;
@@ -50,35 +52,35 @@ namespace warehouse.Controllers
             var order = _orderServices.GetOrderListByTarget(target);
             return Ok(order);
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpDelete("{id}")]
         public ActionResult DeleteById([FromRoute] int id)
         {
             _orderServices.DeleteById(id);
             return NoContent();
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPost]
         public ActionResult CreateOrder([FromBody] OrderCreateDto orderCreateDto)
         {
             var orderId = _orderServices.Create(orderCreateDto);
             return Created("/order/" + orderId, null);
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPut("{id}")]
         public ActionResult UpDateOrder([FromBody] OrderCreateDto orderUpdateDto, [FromRoute] int id)
         {
             _orderServices.Update(orderUpdateDto, id);
             return Ok();
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPut("addItem/{id}")]
         public ActionResult AddItem([FromRoute] int id, [FromQuery] int itemId)
         {
             _orderServices.AddItem(id, itemId);
             return Ok();
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpDelete("removeItem/{id}")]
         public ActionResult RemoveItem([FromRoute] int id, [FromQuery] int itemId)
         {

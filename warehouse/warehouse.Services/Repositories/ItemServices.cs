@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using warehouse.Database;
 using warehouse.Database.Entity;
 using warehouse.Dto.Item;
 using warehouse.Exceptions;
+using warehouse.Exceptions.Exceptions;
 using warehouse.Services.IRepositories;
 
 namespace warehouse.Services.Repositories
@@ -13,12 +15,15 @@ namespace warehouse.Services.Repositories
     public class ItemServices : IItemServices
     {
         private readonly WarehouseDbContext _warehouseDbContext;
+        private readonly IUserContextServices _userContextServices;
         private readonly IMapper _mapper;
 
         public ItemServices(WarehouseDbContext warehouseDbContext,
+            IUserContextServices userContextServices,
             IMapper mapper)
         {
             _warehouseDbContext = warehouseDbContext;
+            _userContextServices = userContextServices;
             _mapper = mapper;
         }
 
@@ -48,6 +53,7 @@ namespace warehouse.Services.Repositories
 
         public void DeleteById(int id)
         {
+            if (!IfUserCreated(_userContextServices.GetUserId(), id)) throw new ForbiddenException("Forbidden");
             var item = GetItemById(id);
             _warehouseDbContext.Items.Remove(item);
             _warehouseDbContext.SaveChanges();
@@ -85,8 +91,8 @@ namespace warehouse.Services.Repositories
 
         public void Update(ItemDto itemDto, int id)
         {
+            if (!IfUserCreated(_userContextServices.GetUserId(), id)) throw new ForbiddenException("Forbidden");
             var item = GetItemById(id);
-
             var updateItem = _mapper.Map<Items>(itemDto);
             var updatedItem = ItemUpdate(item, updateItem);
         }
@@ -171,6 +177,16 @@ namespace warehouse.Services.Repositories
                 .Take(quantity)
                 .ToList(); ;
             return items;
+        }
+        private bool IfUserCreated(int userId, int itemId)
+        {
+            var whoCreatedId = GetItemById(itemId)
+                .WhoCreated
+                .Id;
+            var role = _userContextServices.GetUser.FindFirst(x => x.Type == ClaimTypes.Role).Value;
+            if (userId == whoCreatedId) return true;
+            else if (role == "Admin") return true;
+            return false;
         }
     }
 }

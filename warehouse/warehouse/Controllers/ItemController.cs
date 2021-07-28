@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using warehouse.Dto.Item;
 using warehouse.Services.IRepositories;
 
@@ -22,7 +23,7 @@ namespace warehouse.Controllers
             var items = _itemServices.GetItemList(searchingParse, pageNumber, quantity);
             return Ok(items);
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPost("Create")]
         public ActionResult<ItemDto> CreateItem([FromBody] ItemCreateDto itemCreateDto)
         {
@@ -38,7 +39,7 @@ namespace warehouse.Controllers
 
             return Ok(item);
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpDelete("{id}")]
         public ActionResult DeleteById([FromRoute] int id)
         {
@@ -70,7 +71,7 @@ namespace warehouse.Controllers
 
             return Ok(items);
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] ItemDto itemDto, [FromRoute] int id)
         {

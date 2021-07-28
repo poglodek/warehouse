@@ -16,6 +16,7 @@ namespace warehouse.Database.Entity
 
         public bool IsInsurance { get; set; }
 
+        public User WhoCreated { get; set; }
         public bool IsPriority { get; set; }
 
         public DateTime DateTime { get; set; }

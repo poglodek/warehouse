@@ -20,5 +20,6 @@ namespace warehouse.Database.Entity
         public Role Role { get; set; }
         public List<Order> Orders { get; set; }
         public List<Items> Items { get; set; }
+        public List<ShippingInfo> ShippingInfo { get; set; }
     }
 }

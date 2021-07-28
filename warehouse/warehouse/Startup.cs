@@ -19,6 +19,7 @@ using warehouse.Dto.User;
 using warehouse.Services.Authentication;
 using warehouse.Services.IRepositories;
 using warehouse.Services.Repositories;
+using warehouse.Services.Seeders;
 
 namespace warehouse
 {
@@ -54,9 +55,6 @@ namespace warehouse
                     )
                 };
             });
-            //  services.AddAuthorization(options =>
-            //{ // to do
-            //  });
             services.AddControllers().AddFluentValidation();
             services.AddHttpContextAccessor();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -74,7 +72,8 @@ namespace warehouse
             services.AddScoped<IValidator<UserCreatedDto>, UserCreatedDtoValidation>();
             services.AddScoped<IValidator<ShippingInfoCreateDto>, ShippingInfoCreateDtoValidation>();
             services.AddScoped<IValidator<ShippingInfoUpdateDto>, ShippingInfoUpdateDtoValidation>();
-
+            services.AddScoped<RoleSeeder>();
+            services.AddScoped<UserSeeder>();
             services.AddTransient<ErrorHandlingMiddleware>();
             services.AddSwaggerGen(c =>
             {
@@ -83,8 +82,9 @@ namespace warehouse
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, RoleSeeder roleSeeder, UserSeeder userSeeder)
         {
+            
             app.UseResponseCaching();
             if (env.IsDevelopment())
             {
@@ -101,7 +101,8 @@ namespace warehouse
             var database = serviceProvider.GetService<WarehouseDbContext>();
 
             database.Database.Migrate();
-
+            roleSeeder.Seed();
+            userSeeder.Seed();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

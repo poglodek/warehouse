@@ -28,6 +28,12 @@ namespace warehouse
                 context.Response.StatusCode = 404;
                 await context.Response.WriteAsync(ex.Message);
             }
+            catch (ForbiddenException ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync(ex.Message);
+            }
             catch (CannotDelete ex)
             {
                 _logger.LogError(ex.Message, ex);
