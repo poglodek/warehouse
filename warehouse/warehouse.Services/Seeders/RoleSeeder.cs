@@ -39,7 +39,7 @@ namespace warehouse.Services.Seeders
                 {
                     RoleName = "Manager"
                 }
-                
+
             };
             return roles;
         }

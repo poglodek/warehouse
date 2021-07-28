@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 using warehouse.Dto.User;
 using warehouse.Services.IRepositories;
 
@@ -62,7 +62,7 @@ namespace warehouse.Controllers
         }
 
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("register")]
         public ActionResult RegisterUser([FromBody] UserCreatedDto user)
         {

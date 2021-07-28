@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 using warehouse.Dto.Client;
 using warehouse.Services.IRepositories;
 
@@ -17,7 +17,7 @@ namespace warehouse.Controllers
         {
             _clientServices = clientServices;
         }
-        
+
         [HttpGet("GetAll")]
         public ActionResult<List<ClientDto>> GetClientsList()
         {

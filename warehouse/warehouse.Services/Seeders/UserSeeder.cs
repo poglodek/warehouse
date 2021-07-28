@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using warehouse.Database;
-using warehouse.Database.Entity;
 using warehouse.Dto.User;
 using warehouse.Services.IRepositories;
 
@@ -23,7 +22,7 @@ namespace warehouse.Services.Seeders
             if (!_warehouseDbContext.Users.Any())
             {
                 SetAdmin();
-                
+
             }
         }
 
