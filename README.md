@@ -8,7 +8,7 @@ A simple Web API in C# - ASP .NET
 
 # Packages: <br />
 - <h3><b><a href="https://github.com/dotnet/efcore">Entity Framework Core</a></b></h3> Used for operating on database
-- <h3><b><a href="https://github.com/aspnet/Security/tree/master/src/Microsoft.AspNetCore.Authentication">AspNetCore Authentication</a></b></h3> Used for authorization and authentication
+- <h3><b><a href="https://github.com/aspnet/Security/tree/master/src/Microsoft.AspNetCore.Authentication">AspNetCore Authentication</a></b></h3> Used for authorization and authentication - using JWT Token with expire 15 days (you can change this in appsettings.json).
 - <h3><b><a href="https://github.com/AutoMapper/AutoMapper">AutoMapper</a></b></h3> Used for object mapping
 - <h3><b><a href="https://github.com/NLog">Nlog</a></b></h3> Used for logging
 - <h3><b><a href="https://github.com/FluentValidation/FluentValidation">FluentValidation</a></b></h3> Used to validate submitted objects
