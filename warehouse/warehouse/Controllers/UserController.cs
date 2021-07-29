@@ -18,35 +18,35 @@ namespace warehouse.Controllers
         {
             _userServices = userServices;
         }
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         [HttpGet("GetAll")]
         public ActionResult<List<UserDto>> GetClientsList()
         {
             var users = _userServices.GetAllUsers();
             return Ok(users);
         }
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         [HttpGet("{id}")]
         public ActionResult<UserDto> GetById([FromRoute] int id)
         {
             var user = _userServices.GetUserDtoById(id);
             return Ok(user);
         }
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         [HttpGet("GetByName")]
         public ActionResult<List<UserDto>> GetByName([FromQuery] string name)
         {
             var user = _userServices.GetUserDtoByName(name);
             return Ok(user);
         }
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         [HttpGet("GetByEmail")]
         public ActionResult<List<UserDto>> GetByEmail([FromQuery] string email)
         {
             var user = _userServices.GetUserDtoByEmail(email);
             return Ok(user);
         }
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin,Manager")]
         [HttpGet("GetByPhone")]
         public ActionResult<List<UserDto>> GetById([FromQuery] string phone)
         {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using warehouse.Dto.ShippingInfo;
 using warehouse.Services.IRepositories;
 
@@ -57,21 +58,21 @@ namespace warehouse.Controllers
             var shippingInfo = _shippingInfoServices.GetShippingInfoDtoByClientId(id);
             return Ok(shippingInfo);
         }
-
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPost]
         public ActionResult<List<ShippingInfoDto>> CreateShippingInfo([FromBody] ShippingInfoCreateDto shippingInfoCreateDto)
         {
             var id = _shippingInfoServices.CreateShippingInfo(shippingInfoCreateDto);
             return Created("/ShippingInfo/get/" + id, null);
         }
-
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPatch("{id}")]
         public ActionResult<List<ShippingInfoDto>> UpdateShippingInfo([FromBody] ShippingInfoUpdateDto shippingInfoUpdateDto, [FromRoute] int id)
         {
             _shippingInfoServices.UpdateShippingInfo(shippingInfoUpdateDto, id);
             return Ok();
         }
-
+        [Authorize(Roles = "Admin,Manager")]
         [HttpDelete("{id}")]
         public ActionResult<List<ShippingInfoDto>> DeleteShippingInfoById([FromRoute] int id)
         {
