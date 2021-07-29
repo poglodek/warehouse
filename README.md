@@ -15,7 +15,7 @@ A simple Web API in C# - ASP .NET
 - <h3><b><a href="https://github.com/swagger-api">Swagger</a></b></h3> Used to show api call for frontend developers
 <hr>
 
-# Swagger sample
+# Swagger example
 <img src="https://user-images.githubusercontent.com/83174704/127536034-51bf26cb-a132-4e0c-b479-e60f75bcb06d.PNG" />
 <img src="https://user-images.githubusercontent.com/83174704/127536035-d1b10eb5-183c-4abe-b33a-cbede987de1a.PNG" />
 <br /><br/ >
