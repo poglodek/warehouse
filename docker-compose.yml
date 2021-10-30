@@ -17,4 +17,4 @@ services:
       ACCEPT_EULA: "Y"
     restart: always
     expose:  
-      - 1433 
+      - 1433  

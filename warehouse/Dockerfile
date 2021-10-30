@@ -11,7 +11,7 @@ EXPOSE 1235
 #ENV ASPNETCORE_URLS=https://+:5001
 # if i want to change port, default 80 and 443 for http nad https
 
-
+ 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["warehouse/warehouse.csproj", "warehouse/"]

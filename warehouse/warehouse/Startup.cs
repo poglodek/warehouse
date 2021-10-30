@@ -20,7 +20,7 @@ using warehouse.Services.Authentication;
 using warehouse.Services.IRepositories;
 using warehouse.Services.Repositories;
 using warehouse.Services.Seeders;
-
+ 
 namespace warehouse
 {
     public class Startup
