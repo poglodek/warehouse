@@ -59,7 +59,7 @@ namespace warehouse
             services.AddHttpContextAccessor();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddSingleton(authSettings);
-            services.AddDbContext<WarehouseDbContext>(options => options.UseSqlServer("Server=.;Database=WarehouseAPI;Trusted_Connection=True;"));
+            services.AddDbContext<WarehouseDbContext>(options => options.UseSqlServer("Server=sql-database;Database=WarehouseAPI;User Id=sa;Password=Pas50rd1"));
             services.AddAutoMapper(typeof(WarehouseMapper).Assembly);
             services.AddScoped<IItemServices, ItemServices>();
             services.AddScoped<IIndexServices, IndexServices>();
